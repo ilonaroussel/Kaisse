@@ -8,19 +8,19 @@ public class Dish {
     private Float price;
     private String image;
 
-    public Dish(String image, Float price, String description, String name) {
-        this.image = image;
-        this.price = price;
-        this.description = description;
+    public Dish(String name, String description, Float price, String image) {
         this.name = name;
+        this.description = description;
+        this.price = price;
+        this.image = image;
     }
 
     public static Dish createFromDocument(Document doc) {
         return new Dish(
-                (String) doc.get("image"),
-                Float.parseFloat(doc.get("price").toString()),
+                (String) doc.get("name"),
                 (String) doc.get("description"),
-                (String) doc.get("name")
+                Float.parseFloat(doc.get("price").toString()),
+                (String) doc.get("image")
         );
     }
 
