@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     @FXML
-    private Label logedUserName;
+    private Label loggedUserName;
 
     @FXML
     protected void onHelloButtonClick(ActionEvent event) throws IOException  {
@@ -24,8 +24,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if (Main.logedUser != null) {
-            logedUserName.setText("Bienvenue " + Main.logedUser.getName());
+        if (Main.loggedUser != null) {
+            loggedUserName.setText("Bienvenue " + Main.loggedUser.getName());
         }
     }
 

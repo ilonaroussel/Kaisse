@@ -64,7 +64,4 @@ public class Dish {
     public void setImage(String image) {
         this.image = image;
     }
-    public ObjectId getId() {
-        return id;
-    }
 }

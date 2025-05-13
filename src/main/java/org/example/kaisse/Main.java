@@ -15,7 +15,7 @@ import java.io.IOException;
 public class Main extends Application {
     public static MongoClient mongoClient;
     public static MongoDatabase database;
-    public static User logedUser;
+    public static User loggedUser;
 
     @Override
     public void start(Stage stage) throws IOException {

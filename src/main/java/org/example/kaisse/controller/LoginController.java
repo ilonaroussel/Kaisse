@@ -1,6 +1,5 @@
 package org.example.kaisse.controller;
 
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import javafx.event.ActionEvent;
@@ -14,9 +13,6 @@ import org.example.kaisse.model.User;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
-import java.util.Objects;
-
-import static com.mongodb.client.model.Filters.eq;
 
 public class LoginController {
     @FXML private TextField name;
@@ -54,7 +50,7 @@ public class LoginController {
         }
 
         System.out.println(user.getName());
-        Main.logedUser = user;
+        Main.loggedUser = user;
 
         SceneManager.changeScene("main-view", event);
 
