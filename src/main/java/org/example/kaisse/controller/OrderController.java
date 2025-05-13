@@ -1,10 +1,12 @@
 package org.example.kaisse.controller;
 
-import static com.mongodb.client.model.Aggregates.match;
+import  static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Sorts.ascending;
 
 import com.mongodb.client.*;
+import com.mongodb.client.model.Sorts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -23,8 +25,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static com.mongodb.client.model.Aggregates.lookup;
-
 public class OrderController implements Initializable {
     @FXML
     ListView<HBox> orderList;
@@ -40,13 +40,22 @@ public class OrderController implements Initializable {
         // Init the ListView of orders
         MongoCollection<Document> orderCollection = Main.database.getCollection("Order");
 
-        // Filters and foreign keys matching
+        /*
+        * Pipeline to format the obtained data as follows:
+        * - Get only the PENDING orders
+        * - The sort is ascending because the elements are added at the start of the ListView,
+        * so the oldest will be at the top of the list
+        * - Find the foreign keys and get all their fields instead of just the ObjectId
+        * */
         List<Bson> pipeline = Arrays.asList(
                 match(eq("state", "PENDING")),
+                sort(ascending("date")),
                 lookup("Table", "table", "_id", "table"),
                 lookup("Dish", "dishes", "_id", "dishes"));
 
-        List<Document> orderDocuments = orderCollection.aggregate(pipeline).into(new ArrayList<>());
+        List<Document> orderDocuments = orderCollection
+                .aggregate(pipeline)
+                .into(new ArrayList<>());
 
         orderDocuments.stream().forEach(element -> {
             // Converts Document to Order
@@ -62,7 +71,10 @@ public class OrderController implements Initializable {
 
         ObservableList<Integer> tableNumbers = FXCollections.observableArrayList();
         // Get all the tables in database
-        List<Document> tableDocuments = tableCollection.find().into(new ArrayList<>());
+        List<Document> tableDocuments = tableCollection
+                .find()
+                .sort(Sorts.ascending("number"))
+                .into(new ArrayList<>());
 
         // Create a choice for each table
         tableDocuments.stream().forEach(element -> tableNumbers.add(element.getInteger("number")));
@@ -83,7 +95,7 @@ public class OrderController implements Initializable {
 
         Button deleteButton = new Button("❌");
         deleteButton.setOnAction(actionEvent -> {
-            order.deleteFromDb();
+            order.cancel();
             orderListItems.remove(box);
         });
 
@@ -97,7 +109,7 @@ public class OrderController implements Initializable {
         box.getChildren().addAll(tableLabel, dateLabel, deleteButton, validateButton);
 
         // Add HBox to the ListView
-        orderListItems.add(box);
+        orderListItems.addFirst(box);
     }
 
     @FXML
