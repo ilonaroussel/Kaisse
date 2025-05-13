@@ -11,19 +11,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.bson.Document;
+import org.example.kaisse.controller.OrderController;
 
 import java.io.IOException;
 
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("main-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("order-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
 
-        Dotenv dotenv = Dotenv.load();
+        /*Dotenv dotenv = Dotenv.load();
 
         String uri = dotenv.get("DATABASE_URI");
         try (MongoClient mongoClient = MongoClients.create(uri)) {
@@ -35,7 +36,7 @@ public class Main extends Application {
             } else {
                 System.out.println("No matching documents found.");
             }
-        }
+        }*/
     }
 
     public static void main(String[] args) {
