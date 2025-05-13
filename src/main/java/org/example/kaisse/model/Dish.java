@@ -1,14 +1,17 @@
 package org.example.kaisse.model;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 public class Dish {
+    private ObjectId id;
     private String name;
     private String description;
     private Float price;
     private String image;
 
-    public Dish(String name, String description, Float price, String image) {
+    public Dish(ObjectId id, String name, String description, Float price, String image) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -17,11 +20,20 @@ public class Dish {
 
     public static Dish createFromDocument(Document doc) {
         return new Dish(
+                (ObjectId) doc.get("_id"),
                 (String) doc.get("name"),
                 (String) doc.get("description"),
                 Float.parseFloat(doc.get("price").toString()),
                 (String) doc.get("image")
         );
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     public String getName() {

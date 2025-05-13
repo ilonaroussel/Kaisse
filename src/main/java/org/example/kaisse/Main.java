@@ -21,12 +21,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("menu-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("order-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
+    }
 
+    public static void main(String[] args) {
         Dotenv dotenv = Dotenv.load();
 
         String uri = dotenv.get("DATABASE_URI");
@@ -34,16 +36,6 @@ public class Main extends Application {
         mongoClient = MongoClients.create(uri);
         database = mongoClient.getDatabase("Kaisse");
 
-        MongoCollection<Document> collection = database.getCollection("Dish");
-        Document doc = collection.find(eq("title", "Back to the Future")).first();
-        if (doc != null) {
-            System.out.println(doc.toJson());
-        } else {
-            System.out.println("No matching documents found.");
-        }
-    }
-
-    public static void main(String[] args) {
         launch();
     }
 }

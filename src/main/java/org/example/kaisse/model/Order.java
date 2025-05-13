@@ -1,6 +1,8 @@
 package org.example.kaisse.model;
 
+import com.mongodb.client.MongoCollection;
 import org.bson.Document;
+import org.example.kaisse.Main;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -29,6 +31,22 @@ public class Order {
                 ((Date) doc.get("date")).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(),
                 ((List<Document>) doc.get("dishes")).stream().map(Dish::createFromDocument).collect(Collectors.toCollection(ArrayList::new))
         );
+    }
+
+    public void insertToDb() {
+        MongoCollection<Document> collection = Main.database.getCollection("Order");
+
+        Document doc = new Document("state", this.state)
+                .append("table", this.table.getId())
+                .append("date", this.date)
+                .append("dishes", this.dishes.stream().map(Dish::getId).toList());
+
+        try {
+            collection.insertOne(doc);
+            System.out.println("Inserted: " + this);
+        } catch (Exception e) {
+            System.out.println("Fail Insert: " + e);
+        }
     }
 
     public String getState() {

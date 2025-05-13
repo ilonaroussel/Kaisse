@@ -1,13 +1,16 @@
 package org.example.kaisse.model;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 public class Table {
+    private ObjectId id;
     private Integer number;
     private Integer seats;
     private String emplacement;
 
-    public Table(Integer number, Integer seats, String emplacement) {
+    public Table(ObjectId id, Integer number, Integer seats, String emplacement) {
+        this.id = id;
         this.number = number;
         this.seats = seats;
         this.emplacement = emplacement;
@@ -15,10 +18,19 @@ public class Table {
 
     public static Table createFromDocument(Document doc) {
         return new Table(
+                (ObjectId) doc.get("_id"),
                 Integer.parseInt(doc.get("number").toString()),
                 Integer.parseInt(doc.get("seats").toString()),
                 (String) doc.get("emplacement")
         );
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     public Integer getNumber() {
