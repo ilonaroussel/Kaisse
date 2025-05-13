@@ -1,4 +1,4 @@
-package Models;
+package org.example.kaisse.model;
 
 public class Dish {
     private String name;

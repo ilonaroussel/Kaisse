@@ -1,4 +1,4 @@
-package Models;
+package org.example.kaisse.model;
 
 import java.util.Date;
 
