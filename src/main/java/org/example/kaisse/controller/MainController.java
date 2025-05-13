@@ -2,17 +2,31 @@ package org.example.kaisse.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import org.example.kaisse.Main;
 import org.example.kaisse.SceneManager;
+import org.example.kaisse.model.User;
+
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class MainController {
+public class MainController implements Initializable {
     @FXML
-    private Label welcomeText;
+    private Label logedUserName;
 
     @FXML
     protected void onHelloButtonClick(ActionEvent event) throws IOException  {
-        SceneManager.changeScene("register-view", event);
+        SceneManager.changeScene("login-view", event);
     }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        if (Main.logedUser != null) {
+            logedUserName.setText("Bienvenue " + Main.logedUser.getName());
+        }
+    }
+
 }

@@ -25,15 +25,15 @@ public class User {
         this.job = job;
     }
 
-    public Float getWorkTime() {
+    public Double getWorkTime() {
         return workTime;
     }
 
-    public void setWorkTime(Float workTime) {
+    public void setWorkTime(Double workTime) {
         this.workTime = workTime;
     }
 
-    public User(String name, String password, String job, Float workTime) {
+    public User(String name, String password, String job, Double workTime) {
         this.name = name;
         this.password = password;
         this.job = job;
@@ -43,5 +43,5 @@ public class User {
     private String name;
     private String password;
     private String job;
-    private Float workTime;
+    private Double workTime;
 }

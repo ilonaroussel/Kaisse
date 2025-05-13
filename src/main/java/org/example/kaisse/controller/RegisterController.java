@@ -37,7 +37,7 @@ public class RegisterController {
             return;
         }
         String hashedPassword = BCrypt.hashpw(submitPassword, BCrypt.gensalt());
-        User userTest = new User(submitName, hashedPassword, "", 0f);
+        User userTest = new User(submitName, hashedPassword, "", 0.0);
 
         MongoDatabase database = Main.database;
         MongoCollection<Document> collection = database.getCollection("User");
