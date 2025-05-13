@@ -4,16 +4,24 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.kaisse.controller.RegisterController">
-   <children>
-      <TextField fx:id="name" layoutX="226.0" layoutY="120.0" />
-      <TextField fx:id="password" layoutX="226.0" layoutY="180.0" />
-      <TextField fx:id="confirmPassword" layoutX="226.0" layoutY="240.0" />
-      <Button layoutX="276.0" layoutY="300.0" mnemonicParsing="false" onAction="#handleSubmit" text="Submit" />
-      <Label layoutX="230.0" layoutY="31.0" prefHeight="74.0" prefWidth="143.0" text="Kaisse">
-         <font>
-            <Font size="50.0" />
-         </font>
-      </Label>
-   </children>
-</AnchorPane>
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.example.kaisse.controller.RegisterController"
+           prefWidth="600.0" prefHeight="400.0">
+
+   <VBox alignment="CENTER" spacing="15">
+      <children>
+         <Label text="Register">
+            <font>
+               <Font size="50.0"/>
+            </font>
+         </Label>
+
+         <TextField fx:id="name" promptText="Name" maxWidth="200" />
+         <TextField fx:id="password" promptText="Password" maxWidth="200" />
+         <TextField fx:id="confirmPassword" promptText="Confirm Password" maxWidth="200" />
+
+         <Button text="Submit" onAction="#handleSubmit" />
+      </children>
+   </VBox>
+
+</StackPane>
