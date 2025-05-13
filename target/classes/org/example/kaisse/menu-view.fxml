@@ -20,14 +20,14 @@
         </rowConstraints>
          <children>
             <Label alignment="CENTER" prefHeight="17.0" prefWidth="69.0" text="Name:" textAlignment="RIGHT" />
-            <TextField prefHeight="25.0" prefWidth="124.0" GridPane.columnIndex="1" />
+            <TextField fx:id="nameField" prefHeight="25.0" prefWidth="124.0" GridPane.columnIndex="1" />
             <Label alignment="CENTER" layoutX="10.0" layoutY="16.0" prefHeight="17.0" prefWidth="69.0" text="Description:" textAlignment="RIGHT" GridPane.rowIndex="1" />
-            <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextArea fx:id="descriptionField" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Label alignment="CENTER" layoutX="10.0" layoutY="53.0" prefHeight="37.0" prefWidth="66.0" text="Price:" textAlignment="RIGHT" GridPane.rowIndex="2" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="priceField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label alignment="CENTER" layoutX="10.0" layoutY="16.0" prefHeight="17.0" prefWidth="69.0" text="Picture:" textAlignment="RIGHT" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Button mnemonicParsing="false" text="Validate" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="imageField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Button mnemonicParsing="false" onAction="#addDish" text="Validate" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
    </children>
