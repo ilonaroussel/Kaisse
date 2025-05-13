@@ -15,26 +15,29 @@ import org.bson.Document;
 import java.io.IOException;
 
 public class Main extends Application {
+    public static MongoClient mongoClient;
+    public static MongoDatabase database;
+
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("register-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
 
         Dotenv dotenv = Dotenv.load();
-
         String uri = dotenv.get("DATABASE_URI");
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("Kaisse");
-            MongoCollection<Document> collection = database.getCollection("Dish");
-                Document doc = collection.find(eq("title", "Back to the Future")).first();
-            if (doc != null) {
-                System.out.println(doc.toJson());
-            } else {
-                System.out.println("No matching documents found.");
-            }
+
+        mongoClient = MongoClients.create(uri);
+        database = mongoClient.getDatabase("Kaisse");
+
+        MongoCollection<Document> collection = database.getCollection("Dish");
+        Document doc = collection.find(eq("title", "Back to the Future")).first();
+        if (doc != null) {
+            System.out.println(doc.toJson());
+        } else {
+            System.out.println("No matching documents found.");
         }
     }
 
