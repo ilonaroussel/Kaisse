@@ -8,6 +8,9 @@ module org.example.kaisse {
     requires org.kordamp.ikonli.javafx;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires org.mongodb.driver.sync.client;
+    requires org.mongodb.driver.core;
+    requires org.mongodb.bson;
 
     opens org.example.kaisse to javafx.fxml;
     exports org.example.kaisse;
