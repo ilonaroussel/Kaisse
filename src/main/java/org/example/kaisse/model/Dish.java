@@ -18,6 +18,7 @@ public class Dish {
         this.image = image;
     }
 
+
     public static Dish createFromDocument(Document doc) {
         return new Dish(
                 doc.getObjectId("_id"),
@@ -62,5 +63,8 @@ public class Dish {
 
     public void setImage(String image) {
         this.image = image;
+    }
+    public ObjectId getId() {
+        return id;
     }
 }
