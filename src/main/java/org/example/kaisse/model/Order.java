@@ -2,7 +2,7 @@ package org.example.kaisse.model;
 
 import org.bson.Document;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 public class Order {
     private String state;
     private Table table;
-    private LocalDate date;
+    private LocalDateTime date;
     private ArrayList<Dish> dishes;
 
-    public Order(String state, Table table, LocalDate date, ArrayList<Dish> dishes) {
+    public Order(String state, Table table, LocalDateTime date, ArrayList<Dish> dishes) {
         this.state = state;
         this.table = table;
         this.date = date;
@@ -26,7 +26,7 @@ public class Order {
         return new Order(
                 (String) doc.get("state"),
                 Table.createFromDocument(((List<Document>) doc.get("table")).getFirst()),
-                ((Date) doc.get("date")).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+                ((Date) doc.get("date")).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(),
                 ((List<Document>) doc.get("dishes")).stream().map(Dish::createFromDocument).collect(Collectors.toCollection(ArrayList::new))
         );
     }
@@ -47,11 +47,11 @@ public class Order {
         this.table = table;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

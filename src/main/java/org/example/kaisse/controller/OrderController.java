@@ -55,7 +55,7 @@ public class OrderController implements Initializable {
                 box.setPrefWidth(200);
 
                 Label tableLabel = new Label(order.getTable().getNumber().toString());
-                Label dateLabel = new Label(order.getDate().toString());//.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+                Label dateLabel = new Label(order.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
 
                 box.getChildren().addAll(tableLabel, dateLabel);
 
