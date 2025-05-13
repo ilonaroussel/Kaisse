@@ -1,5 +1,7 @@
 package org.example.kaisse.model;
 
+import org.bson.Document;
+
 public class Dish {
     private String name;
     private String description;
@@ -12,6 +14,16 @@ public class Dish {
         this.price = price;
         this.image = image;
     }
+
+    public static Dish createFromDocument(Document doc) {
+        return new Dish(
+                doc.get("name").toString(),
+                doc.get("description").toString(),
+                Float.parseFloat(doc.get("price").toString()),
+                doc.get("image").toString()
+        );
+    }
+
 
     public String getName() {
         return name;
