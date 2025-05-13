@@ -12,6 +12,7 @@ module org.example.kaisse {
     requires org.mongodb.driver.core;
     requires org.mongodb.bson;
     requires io.github.cdimascio.dotenv.java;
+    requires jbcrypt;
 
     opens org.example.kaisse to javafx.fxml;
     exports org.example.kaisse;
