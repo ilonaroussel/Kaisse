@@ -27,12 +27,7 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
 
-        Dotenv dotenv = Dotenv.load();
 
-        String uri = dotenv.get("DATABASE_URI");
-
-        mongoClient = MongoClients.create(uri);
-        database = mongoClient.getDatabase("Kaisse");
 
         MongoCollection<Document> collection = database.getCollection("Dish");
         Document doc = collection.find(eq("title", "Back to the Future")).first();
@@ -41,9 +36,16 @@ public class Main extends Application {
         } else {
             System.out.println("No matching documents found.");
         }
+
     }
 
     public static void main(String[] args) {
+        Dotenv dotenv = Dotenv.load();
+
+        String uri = dotenv.get("DATABASE_URI");
+
+        mongoClient = MongoClients.create(uri);
+        database = mongoClient.getDatabase("Kaisse");
         launch();
     }
 }

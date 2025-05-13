@@ -1,26 +1,31 @@
 package org.example.kaisse.model;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 public class Dish {
+    private final ObjectId id;
     private String name;
     private String description;
-    private Float price;
+    private Double price;
     private String image;
 
-    public Dish(String name, String description, Float price, String image) {
+    public Dish(ObjectId id, String name, String description, Double price, String image) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.image = image;
     }
 
+
     public static Dish createFromDocument(Document doc) {
         return new Dish(
-                (String) doc.get("name"),
-                (String) doc.get("description"),
-                Float.parseFloat(doc.get("price").toString()),
-                (String) doc.get("image")
+                doc.getObjectId("_id"),
+                doc.getString("name"),
+                doc.getString("description"),
+                doc.get("price", Double.class),
+                doc.getString("image")
         );
     }
 
@@ -40,11 +45,11 @@ public class Dish {
         this.description = description;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -54,5 +59,8 @@ public class Dish {
 
     public void setImage(String image) {
         this.image = image;
+    }
+    public ObjectId getId() {
+        return id;
     }
 }

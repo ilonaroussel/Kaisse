@@ -2,10 +2,17 @@ package org.example.kaisse.controller;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.example.kaisse.Main;
@@ -21,12 +28,17 @@ import java.util.stream.Collectors;
 public class MenuController {
 
     @FXML
-    public GridPane form_popup;
-
-    @FXML private TextField nameField;
-    @FXML private TextArea descriptionField;
-    @FXML private TextField priceField;
-    @FXML private TextField imageField;
+    private GridPane form_popup;
+    @FXML
+    private ListView<HBox> dishList;
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextArea descriptionField;
+    @FXML
+    private TextField priceField;
+    @FXML
+    private TextField imageField;
 
     @FXML
     protected void onDishButtonClick() {
@@ -63,13 +75,32 @@ public class MenuController {
     };
 
     @FXML
-    protected void getAllDishesFromDatabase(){
+    protected void initialize(){
         MongoDatabase database = Main.database;
         MongoCollection<Document> collection = database.getCollection("Dish");
 
         List<Document> documents = collection.find().into(new ArrayList<>());
         List<Dish> dishes = documents.stream().map(Dish::createFromDocument).toList();
-        System.out.println(dishes);
 
+        ObservableList<HBox> dishesListView = FXCollections.observableArrayList(
+                dishes.stream().map(dish -> {
+            HBox dishCard = new HBox(20);
+            dishCard.setPrefHeight(100);
+            dishCard.setPrefWidth(200);
+
+            Image image = new Image(dish.getImage());
+            ImageView dishImage = new ImageView();
+            dishImage.setImage(image);
+
+            Label dishName = new Label(dish.getName());
+            Label dishPrice = new Label(dish.getPrice() + "€");
+            Label dishDescription = new Label(dish.getDescription());
+
+            dishCard.getChildren().addAll(dishImage, dishName, dishPrice, dishDescription);
+
+            return dishCard;
+        }).toList());
+
+        dishList.setItems(dishesListView);
     }
 }
