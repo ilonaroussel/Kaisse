@@ -31,13 +31,16 @@ public class OrderController implements Initializable {
     @FXML
     private ChoiceBox<Integer> tableNumber;
 
+    // Dynamic list to update the view
     private final ObservableList<HBox> orderListItems = FXCollections.observableArrayList();
 
+    // Method that triggers on controller load
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         // Init the ListView of orders
         MongoCollection<Document> orderCollection = Main.database.getCollection("Order");
 
+        // Filters and foreign keys matching
         List<Bson> pipeline = Arrays.asList(
                 match(eq("state", "PENDING")),
                 lookup("Table", "table", "_id", "table"),
@@ -46,6 +49,7 @@ public class OrderController implements Initializable {
         List<Document> orderDocuments = orderCollection.aggregate(pipeline).into(new ArrayList<>());
 
         orderDocuments.stream().forEach(element -> {
+            // Converts Document to Order
             Order order = Order.createFromDocument(element);
 
             addOrderInList(order);
@@ -57,20 +61,25 @@ public class OrderController implements Initializable {
         MongoCollection<Document> tableCollection = Main.database.getCollection("Table");
 
         ObservableList<Integer> tableNumbers = FXCollections.observableArrayList();
+        // Get all the tables in database
         List<Document> tableDocuments = tableCollection.find().into(new ArrayList<>());
 
+        // Create a choice for each table
         tableDocuments.stream().forEach(element -> tableNumbers.add(element.getInteger("number")));
 
         tableNumber.setItems(tableNumbers);
     }
 
     private void addOrderInList(Order order) {
+        // HBox to align items horizontally
         HBox box = new HBox(20);
         box.setPrefHeight(100);
         box.setPrefWidth(200);
 
+        // Label with the table number
         Label tableLabel = new Label(order.getTable().getNumber().toString());
-        Label dateLabel = new Label(order.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        // Label with the formatted date
+        Label dateLabel = new Label(order.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
         Button deleteButton = new Button("❌");
         deleteButton.setOnAction(actionEvent -> {
@@ -84,20 +93,20 @@ public class OrderController implements Initializable {
             orderListItems.remove(box);
         });
 
+        // Add elements to the HBox
         box.getChildren().addAll(tableLabel, dateLabel, deleteButton, validateButton);
 
+        // Add HBox to the ListView
         orderListItems.add(box);
     }
 
     @FXML
     public void createOrder() {
         Integer tableNumberValue = tableNumber.getValue();
-        // if no table chosen
+        // if no table is chosen
         if (tableNumberValue == null) {
             throw new IllegalArgumentException("No table selected");
         }
-
-        System.out.println(tableNumberValue);
 
         MongoCollection<Document> tableCollection = Main.database.getCollection("Table");
 
@@ -106,6 +115,7 @@ public class OrderController implements Initializable {
             throw new IllegalStateException("Table not found in database");
         }
 
+        // Converts the Document to a Table
         Table table = Table.createFromDocument(document);
 
         MongoCollection<Document> orderCollection = Main.database.getCollection("Order");

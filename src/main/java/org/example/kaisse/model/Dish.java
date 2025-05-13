@@ -7,10 +7,10 @@ public class Dish {
     private final ObjectId id;
     private String name;
     private String description;
-    private Float price;
+    private Double price;
     private String image;
 
-    public Dish(ObjectId id, String name, String description, Float price, String image) {
+    public Dish(ObjectId id, String name, String description, Double price, String image) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -23,7 +23,7 @@ public class Dish {
                 doc.getObjectId("_id"),
                 doc.getString("name"),
                 doc.getString("description"),
-                doc.get("price", Float.class),
+                doc.get("price", Double.class),
                 doc.getString("image")
         );
     }
@@ -48,11 +48,11 @@ public class Dish {
         this.description = description;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

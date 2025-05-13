@@ -28,6 +28,7 @@ public class Order {
         this.dishes = dishes;
     }
 
+    // Static function to create an order from a document
     public static Order createFromDocument(Document doc) {
         return new Order(
                 doc.getObjectId("_id"),
@@ -41,6 +42,7 @@ public class Order {
         );
     }
 
+    // Converts the Order to a Document
     public Document convertToDocument() {
         return new Document("_id", this.id)
                 .append("state", this.state)
