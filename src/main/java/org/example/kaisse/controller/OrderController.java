@@ -1,6 +1,7 @@
 package org.example.kaisse.controller;
 
 import static com.mongodb.client.model.Aggregates.match;
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
 import com.mongodb.client.*;
@@ -8,13 +9,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 import org.example.kaisse.Main;
 import org.example.kaisse.model.Order;
 import org.example.kaisse.model.Table;
@@ -30,7 +29,7 @@ public class OrderController implements Initializable {
     @FXML
     ListView<HBox> orderList;
     @FXML
-    private ChoiceBox<String> tableNumber;
+    private ChoiceBox<Integer> tableNumber;
 
     private final ObservableList<HBox> orderListItems = FXCollections.observableArrayList();
 
@@ -57,10 +56,10 @@ public class OrderController implements Initializable {
         // Init the choices of the ChoiceBox
         MongoCollection<Document> tableCollection = Main.database.getCollection("Table");
 
-        ObservableList<String> tableNumbers = FXCollections.observableArrayList();
+        ObservableList<Integer> tableNumbers = FXCollections.observableArrayList();
         List<Document> tableDocuments = tableCollection.find().into(new ArrayList<>());
 
-        tableDocuments.stream().forEach(element -> tableNumbers.add(element.getString("number")));
+        tableDocuments.stream().forEach(element -> tableNumbers.add(element.getInteger("number")));
 
         tableNumber.setItems(tableNumbers);
     }
@@ -73,14 +72,26 @@ public class OrderController implements Initializable {
         Label tableLabel = new Label(order.getTable().getNumber().toString());
         Label dateLabel = new Label(order.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
 
-        box.getChildren().addAll(tableLabel, dateLabel);
+        Button deleteButton = new Button("❌");
+        deleteButton.setOnAction(actionEvent -> {
+            order.deleteFromDb();
+            orderListItems.remove(box);
+        });
+
+        Button validateButton = new Button("✅");
+        validateButton.setOnAction(actionEvent -> {
+            order.validate();
+            orderListItems.remove(box);
+        });
+
+        box.getChildren().addAll(tableLabel, dateLabel, deleteButton, validateButton);
 
         orderListItems.add(box);
     }
 
     @FXML
     public void createOrder() {
-        String tableNumberValue = tableNumber.getValue();
+        Integer tableNumberValue = tableNumber.getValue();
         // if no table chosen
         if (tableNumberValue == null) {
             throw new IllegalArgumentException("No table selected");
@@ -100,12 +111,14 @@ public class OrderController implements Initializable {
         MongoCollection<Document> orderCollection = Main.database.getCollection("Order");
 
         // if an order on the table is already ongoing
-        if (orderCollection.find(eq("table", table.getId())).first() != null) {
+        if (orderCollection
+                .find(and(eq("table", table.getId()), eq("state", "PENDING")))
+                .first() != null) {
             throw new IllegalStateException("An order for this table is already ongoing");
         }
 
         // create a PENDING order
-        Order order = new Order("PENDING", table, LocalDateTime.now(), new ArrayList<>());
+        Order order = new Order(ObjectId.get(), "PENDING", table, LocalDateTime.now(), new ArrayList<>());
 
         order.insertToDb(); // update db
         addOrderInList(order); // update orderList

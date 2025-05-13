@@ -4,7 +4,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 public class Table {
-    private ObjectId id;
+    private final ObjectId id;
     private Integer number;
     private Integer seats;
     private String emplacement;
@@ -18,19 +18,15 @@ public class Table {
 
     public static Table createFromDocument(Document doc) {
         return new Table(
-                (ObjectId) doc.get("_id"),
-                Integer.parseInt(doc.get("number").toString()),
-                Integer.parseInt(doc.get("seats").toString()),
-                (String) doc.get("emplacement")
+                doc.getObjectId("_id"),
+                doc.getInteger("number"),
+                doc.getInteger("seats"),
+                doc.getString("emplacement")
         );
     }
 
     public ObjectId getId() {
         return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
     }
 
     public Integer getNumber() {

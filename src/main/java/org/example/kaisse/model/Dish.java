@@ -4,7 +4,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 public class Dish {
-    private ObjectId id;
+    private final ObjectId id;
     private String name;
     private String description;
     private Float price;
@@ -20,20 +20,16 @@ public class Dish {
 
     public static Dish createFromDocument(Document doc) {
         return new Dish(
-                (ObjectId) doc.get("_id"),
-                (String) doc.get("name"),
-                (String) doc.get("description"),
-                Float.parseFloat(doc.get("price").toString()),
-                (String) doc.get("image")
+                doc.getObjectId("_id"),
+                doc.getString("name"),
+                doc.getString("description"),
+                doc.get("price", Float.class),
+                doc.getString("image")
         );
     }
 
     public ObjectId getId() {
         return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
     }
 
     public String getName() {
