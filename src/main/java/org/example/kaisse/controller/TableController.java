@@ -52,7 +52,7 @@ public class TableController {
                 String display = "Table " + table.getNumber() +
                         " | Places: " + table.getSeats() +
                         " | Emplacement: " + table.getEmplacement() +
-                        " | Libre: " + (table.getFree() ? "true" : "false");
+                        " | Libre: " + (table.getFree() ? "Disponible" : "Indisponible");
 
                 System.out.println("🟢 Ajout au ListView : " + display);
                 tableDisplayList.add(display);
