@@ -9,6 +9,7 @@ import com.mongodb.client.*;
 import com.mongodb.client.model.Sorts;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,6 +22,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.example.kaisse.Main;
+import org.example.kaisse.model.Chronometer;
 import org.example.kaisse.model.Dish;
 import org.example.kaisse.model.Order;
 import org.example.kaisse.model.Table;
@@ -38,7 +40,7 @@ public class OrderController implements Initializable {
     @FXML
     private Button ajouterTableButton;
 
-    private int totalSeconds = 25 * 60;
+    private Chronometer chronometer;
 
     @FXML
     ListView<VBox> orderList;
@@ -63,30 +65,34 @@ public class OrderController implements Initializable {
         initializeChronometer();
     }
 
-    @FXML
     public void initializeChronometer() {
-    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-        totalSeconds--;
+        chronometer = new Chronometer();
+        chronometer.start(); // Démarrer le chronomètre
 
-        int minutes = totalSeconds / 60;
-        int seconds = totalSeconds % 60;
+        // Mettre à jour le timer toutes les secondes
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(1), event -> updateTimer())
+        );
 
+        timeline.setCycleCount(Timeline.INDEFINITE); // Répéter indéfiniment
+        timeline.play();
+    }
+
+    private void updateTimer() {
+        int remainingTime = chronometer.getRemainingTime(); // Récupère le temps restant
+        int minutes = remainingTime / 60;
+        int seconds = remainingTime % 60;
+
+        // Mettre à jour l'affichage du timer sur le label
         timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
 
-        if (totalSeconds <= 15 * 60) {
-            ajouterTableButton.setDisable(true);
+        // Désactiver le bouton après 10 minutes
+        if (remainingTime <= 600) { // 600 secondes = 10 minutes
+            ajouterTableButton.setDisable(true); // Désactive le bouton
+        } else {
+            ajouterTableButton.setDisable(false); // Si le temps est encore supérieur à 10 minutes, le bouton reste activé
         }
-
-        if (totalSeconds <= 0) {
-            timerLabel.setText("00:00");
-        }
-
-    }));
-
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
-}
-
+    }
 
     private void initOrderList() {
         MongoCollection<Document> orderCollection = Main.database.getCollection("Order");
