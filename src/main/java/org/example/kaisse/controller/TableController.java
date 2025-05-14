@@ -22,18 +22,12 @@ public class TableController {
     @FXML
     private ListView<String> listTable;
     @FXML
-    private GridPane form_popup;
-    @FXML
     private TextField numberField;
     @FXML
     private TextField seatsField;
     @FXML
     private TextField emplacementField;
 
-    @FXML
-    protected void onTableButtonClick() {
-        form_popup.setVisible(!form_popup.isVisible());
-    }
 
     @FXML
     protected void getAllTablesFromDatabase() {
@@ -71,11 +65,6 @@ public class TableController {
     }
 
     @FXML
-    public void initialize() {
-        getAllTablesFromDatabase();
-    }
-
-    @FXML
     public void addTable() {
         try {
             Integer number = Integer.parseInt(numberField.getText());
@@ -102,10 +91,17 @@ public class TableController {
             seatsField.clear();
             emplacementField.clear();
 
+            getAllTablesFromDatabase();
+
         } catch (NumberFormatException e) {
             System.out.println("Entrez des nombres valides pour le numéro et les places.");
         } catch (Exception e) {
             System.out.println("Erreur d'insertion : " + e.getMessage());
         }
     };
+
+    @FXML
+    public void initialize() {
+        getAllTablesFromDatabase();
+    }
 }
