@@ -38,6 +38,32 @@ public class UserListController {
         SceneManager.changeScene("create-user-view", event);
     }
 
+    @FXML protected void handleDeleteUser() {
+        HBox selectedItem = usersList.getSelectionModel().getSelectedItem();
+
+        Label nameLabel = (Label) selectedItem.getChildren().get(1);
+        String userName = nameLabel.getText();
+
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Delete User");
+        confirmation.setHeaderText("Delete user : " + userName + " ?");
+        confirmation.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    MongoDatabase database = Main.database;
+                    MongoCollection<Document> collection = database.getCollection("User");
+
+                    collection.deleteOne(Filters.eq("name", userName));
+                    initialize();
+                    System.out.println("User Deleted: " + userName);
+                } catch (Exception e) {
+                    System.out.println("Failed Delete: " + e);
+                }
+            }
+        });
+    }
+
+
     @FXML protected void onUserClick(User user) {
         Dialog<Void> formDialog = new Dialog<>();
         DialogPane dialogPane = formDialog.getDialogPane();
