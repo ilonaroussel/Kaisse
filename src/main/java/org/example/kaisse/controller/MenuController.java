@@ -20,12 +20,15 @@ import org.example.kaisse.model.Dish;
 
 import javax.print.Doc;
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 public class MenuController {
+
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     @FXML
     private GridPane form_popup;
@@ -93,7 +96,7 @@ public class MenuController {
             dishImage.setImage(image);
 
             Label dishName = new Label(dish.getName());
-            Label dishPrice = new Label(dish.getPrice() + "€");
+            Label dishPrice = new Label(df.format(dish.getPrice()) + "€");
             Label dishDescription = new Label(dish.getDescription());
 
             dishCard.getChildren().addAll(dishImage, dishName, dishPrice, dishDescription);

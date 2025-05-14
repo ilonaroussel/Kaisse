@@ -43,7 +43,7 @@ public class TableController {
 
             List<Document> documents = collection.find().into(new ArrayList<>());
             for (Document doc : documents) {
-                System.out.println("📄 Document : " + doc.toJson());
+                System.out.println("Document : " + doc.toJson());
             }
 
             List<Table> tables = documents.stream()
@@ -57,15 +57,15 @@ public class TableController {
                         " | Places: " + table.getSeats() +
                         " | Emplacement: " + table.getEmplacement() +
                         " | Libre: " + (table.getFree() ? "Disponible" : "Indisponible");
-                System.out.println("🟢 Ajout au ListView : " + display);
+                System.out.println("Ajout au ListView : " + display);
                 tableDisplayList.add(display);
             }
 
             listTable.setItems(tableDisplayList);
-            System.out.println("✅ Affichage terminé.");
+            System.out.println("Affichage terminé.");
 
         } catch (Exception e) {
-            System.out.println("❌ Exception : " + e.getMessage());
+            System.out.println("Exception : " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -96,7 +96,7 @@ public class TableController {
                     .append("isFree", true);
 
             collection.insertOne(dish);
-            System.out.println("✅ Table ajoutée.");
+            System.out.println("Table ajoutée.");
 
             // Reset champs
             numberField.clear();
