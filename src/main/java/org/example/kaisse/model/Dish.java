@@ -5,7 +5,6 @@ import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-import java.util.List;
 
 public class Dish {
     private final ObjectId id;
@@ -46,25 +45,16 @@ public class Dish {
         );
     }
 
-
     public Document convertToDocument() {
-        Document doc = new Document()
+        return new Document()
                 .append("name", name)
                 .append("description", description)
                 .append("price", price)
-                .append("image", image);
-
-            List<Document> ingredientsDocs = ingredients.stream()
-                    .map(Ingredient::transformIngredientsIntoDocument)
-                    .toList();
-            doc.append("ingredients", ingredientsDocs);
-
-        return doc;
+                .append("image", image)
+                .append("ingredients", ingredients.stream()
+                    .map(Ingredient::convertToDocument)
+                    .toList());
     }
-
-
-
-
 
     public ObjectId getId() {
         return id;

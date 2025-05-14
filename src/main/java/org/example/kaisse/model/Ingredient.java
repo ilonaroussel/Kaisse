@@ -12,13 +12,6 @@ public class Ingredient {
         this.quantity = quantity;
         this.price = price;
     }
-    public Document transformIngredientsIntoDocument() {
-        return new Document()
-                .append("name", name)
-                .append("quantity", quantity)
-                .append("price", price);
-    }
-
 
     public static Ingredient createFromDocument(Document doc) {
         return new Ingredient(
@@ -26,6 +19,13 @@ public class Ingredient {
                 doc.getInteger("quantity"),
                 doc.getDouble("price")
         );
+    }
+
+    public Document convertToDocument() {
+        return new Document()
+                .append("name", name)
+                .append("quantity", quantity)
+                .append("price", price);
     }
 
     public String getName() {
