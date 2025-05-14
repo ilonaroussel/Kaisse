@@ -54,9 +54,9 @@ public class TableController {
 
             for (Table table : tables) {
                 String display = "Table " + table.getNumber() +
-                        " | Places: " + table.getSeats() +
-                        " | Emplacement: " + table.getEmplacement() +
-                        " | Libre: " + (table.getFree() ? "Disponible" : "Indisponible");
+                        " | Places : " + table.getSeats() +
+                        " | Emplacement : " + table.getEmplacement() +
+                        " | Libre : " + (table.getFree() ? "Disponible" : "Indisponible");
                 System.out.println("Ajout au ListView : " + display);
                 tableDisplayList.add(display);
             }
@@ -98,12 +98,9 @@ public class TableController {
             collection.insertOne(dish);
             System.out.println("Table ajoutée.");
 
-            // Reset champs
             numberField.clear();
             seatsField.clear();
             emplacementField.clear();
-
-            getAllTablesFromDatabase(); // rafraîchir la liste
 
         } catch (NumberFormatException e) {
             System.out.println("Entrez des nombres valides pour le numéro et les places.");
