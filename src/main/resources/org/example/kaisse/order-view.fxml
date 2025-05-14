@@ -5,7 +5,8 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.kaisse.controller.OrderController">
     <ListView fx:id="orderList" layoutX="14.0" layoutY="14.0" prefHeight="372.0" prefWidth="343.0" />
-   <Label layoutX="401.0" layoutY="28.0" text="Table number :" />
-   <Button layoutX="440.0" layoutY="121.0" mnemonicParsing="false" onAction="#createOrder" text="Create table" />
-   <ChoiceBox fx:id="tableNumber" layoutX="389.0" layoutY="52.0" prefWidth="150.0" />
+    <Label layoutX="389.0" layoutY="14.0" text="Table number :" />
+    <Button layoutX="440.0" layoutY="91.0" mnemonicParsing="false" onAction="#createOrder" text="Create table" />
+    <ChoiceBox fx:id="tableNumber" layoutX="389.0" layoutY="39.0" prefWidth="150.0" />
+   <ListView fx:id="dishList" layoutX="380.0" layoutY="130.0" prefHeight="256.0" prefWidth="200.0" />
 </AnchorPane>
