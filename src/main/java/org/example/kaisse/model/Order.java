@@ -11,16 +11,19 @@ import org.example.kaisse.Main;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class Order {
     private final ObjectId id;
     private String state;
     private Table table;
     private LocalDateTime date;
-    private ArrayList<Dish> dishes;
+    private ArrayList<OrderDish> dishes;
 
-    public Order(ObjectId id, String state, Table table, LocalDateTime date, ArrayList<Dish> dishes) {
+    public Order(ObjectId id, String state, Table table, LocalDateTime date, ArrayList<OrderDish> dishes) {
         this.id = id;
         this.state = state;
         this.table = table;
@@ -30,14 +33,18 @@ public class Order {
 
     // Static function to create an order from a document
     public static Order createFromDocument(Document doc) {
+        MongoCollection<Document> tableCollection = Main.database.getCollection("Table");
+
         return new Order(
                 doc.getObjectId("_id"),
                 doc.getString("state"),
-                Table.createFromDocument(doc.getList("table", Document.class).getFirst()),
+                Table.createFromDocument(Objects.requireNonNull(tableCollection
+                        .find(eq("_id", doc.getObjectId("table")))
+                        .first())),
                 doc.getDate("date").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(),
                 doc.getList("dishes", Document.class)
                         .stream()
-                        .map(Dish::createFromDocument)
+                        .map(OrderDish::createFromDocument)
                         .collect(Collectors.toCollection(ArrayList::new))
         );
     }
@@ -50,7 +57,7 @@ public class Order {
                 .append("date", this.date)
                 .append("dishes", this.dishes
                         .stream()
-                        .map(Dish::getId)
+                        .map(OrderDish::convertToDocument)
                         .toList());
     }
 
@@ -70,11 +77,25 @@ public class Order {
     public void addDish(Dish dish) {
         MongoCollection<Document> collection = Main.database.getCollection("Order");
 
-        this.dishes.add(dish);
-        Bson filter = Filters.eq("_id", this.id);
-        Bson update = Updates.set("dishes", this.dishes
-                .stream()
-                .map(Dish::getId)
+        // Check if the dish already exists in the order
+        boolean found = false;
+        for (OrderDish orderDish : this.dishes) {
+            if (orderDish.getDish().getId().equals(dish.getId())) {
+                orderDish.setQuantity(orderDish.getQuantity() + 1); // Increment quantity
+                found = true;
+
+                break;
+            }
+        }
+
+        if (!found) {
+            this.dishes.add(new OrderDish(1, dish)); // Add new dish
+        }
+
+        // Update in database: store list of documents with dish ID and quantity
+        Bson filter = eq("_id", this.id);
+        Bson update = Updates.set("dishes", this.dishes.stream()
+                .map(OrderDish::convertToDocument)
                 .toList());
 
         try {
@@ -85,14 +106,15 @@ public class Order {
         }
     }
 
-    public void removeDish(Dish dish) {
+    public void removeDish(OrderDish orderDish) {
         MongoCollection<Document> collection = Main.database.getCollection("Order");
 
-        this.dishes.remove(dish);
-        Bson filter = Filters.eq("_id", this.id);
+        this.dishes.remove(orderDish);
+
+        Bson filter = eq("_id", this.id);
         Bson update = Updates.set("dishes", this.dishes
                 .stream()
-                .map(Dish::getId)
+                .map(OrderDish::convertToDocument)
                 .toList());
 
         try {
@@ -107,7 +129,7 @@ public class Order {
         MongoCollection<Document> collection = Main.database.getCollection("Order");
 
         this.state = "CANCELED";
-        Bson filter = Filters.eq("_id", this.id);
+        Bson filter = eq("_id", this.id);
         Bson update = Updates.set("state", this.state);
 
         try {
@@ -122,7 +144,7 @@ public class Order {
         MongoCollection<Document> collection = Main.database.getCollection("Order");
 
         this.state = "VALIDATED";
-        Bson filter = Filters.eq("_id", this.id);
+        Bson filter = eq("_id", this.id);
         Bson update = Updates.set("state", this.state);
 
         try {
@@ -161,11 +183,11 @@ public class Order {
         this.date = date;
     }
 
-    public ArrayList<Dish> getDishes() {
+    public ArrayList<OrderDish> getDishes() {
         return dishes;
     }
 
-    public void setDishes(ArrayList<Dish> dishes) {
+    public void setDishes(ArrayList<OrderDish> dishes) {
         this.dishes = dishes;
     }
 }
