@@ -6,17 +6,17 @@
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="800.0" minWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.kaisse.controller.MenuController">
    <children>
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onDishButtonClick" prefHeight="25.0" prefWidth="75.0" text="Add Dish" />
-      <GridPane fx:id="form_popup" alignment="CENTER" layoutX="199.0" layoutY="115.0" prefWidth="201.0" visible="false">
+      <GridPane fx:id="form_popup" alignment="CENTER" layoutX="199.0" layoutY="115.0" prefHeight="115.0" prefWidth="201.0" visible="false">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="66.2" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="156.2" minWidth="10.0" prefWidth="134.2" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="51.2" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="38.2" minHeight="0.0" prefHeight="27.200000000000003" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="38.2" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="38.2" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="26.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="20.4" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="51.2" minHeight="0.0" prefHeight="22.199999999999996" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="44.0" minHeight="10.0" prefHeight="27.200000000000003" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="56.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label alignment="CENTER" prefHeight="17.0" prefWidth="69.0" text="Name:" textAlignment="RIGHT" />
@@ -27,11 +27,9 @@
             <TextField fx:id="priceField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label alignment="CENTER" layoutX="10.0" layoutY="16.0" prefHeight="17.0" prefWidth="69.0" text="Picture:" textAlignment="RIGHT" GridPane.rowIndex="3" />
             <TextField fx:id="imageField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Button mnemonicParsing="false" onAction="#addIngredientRow" text="Add Ingredients" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
-      <ListView fx:id="dishList" AnchorPane.topAnchor="50.0"
-                AnchorPane.bottomAnchor="10.0"
-                AnchorPane.leftAnchor="10.0"
-                AnchorPane.rightAnchor="10.0" />
+      <ListView fx:id="dishList" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0" />
    </children>
 </AnchorPane>

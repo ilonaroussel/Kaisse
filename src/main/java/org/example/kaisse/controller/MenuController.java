@@ -5,6 +5,7 @@ import com.mongodb.client.MongoDatabase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,6 +14,7 @@ import javafx.scene.layout.HBox;
 import org.bson.Document;
 import org.example.kaisse.Main;
 import org.example.kaisse.model.Dish;
+import org.example.kaisse.model.Ingredient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +34,21 @@ public class MenuController {
     private TextField priceField;
     @FXML
     private TextField imageField;
+    @FXML
+    private TextField ingredientName;
+    @FXML
+    private TextField ingredientQuantity;
+
+    private ObservableList<HBox> observableDishes;
+
+
 
     @FXML
     protected void onDishButtonClick() {
-//        form_popup.setVisible(!form_popup.isVisible());
         Dialog<Void> formDialog = new Dialog<>();
         DialogPane dialogPane = formDialog.getDialogPane();
+        formDialog.setHeight(500);
+        formDialog.setWidth(500);
         dialogPane.setContent(form_popup);
         dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         form_popup.setVisible(true);
@@ -47,6 +58,7 @@ public class MenuController {
                 String description = descriptionField.getText();
                 float price = Float.parseFloat(priceField.getText());
                 String image = imageField.getText();
+                List< Ingredient> ingredients = new ArrayList<>();
                 addDish(name, description, price, image);
             }
             return null;
@@ -74,7 +86,7 @@ public class MenuController {
 
         try {
             collection.insertOne(dish);
-            System.out.println("Plat ajouté");
+            observableDishes.setAll(getAllDishes(database));
         } catch (Exception e) {
             System.out.println("Fail Insert: " + e);
         }
@@ -83,7 +95,9 @@ public class MenuController {
     @FXML
     protected void initialize(){
         MongoDatabase database = Main.database;
-        dishList.setItems(getAllDishes(database));
+        observableDishes = FXCollections.observableArrayList();
+        dishList.setItems(observableDishes);
+        observableDishes.setAll(getAllDishes(database));
 
     }
 
@@ -96,8 +110,8 @@ public class MenuController {
         return FXCollections.observableArrayList(
                 dishes.stream().map(dish -> {
                     HBox dishCard = new HBox(20);
-                    dishCard.setPrefHeight(50);
-                    dishCard.setPrefWidth(75);
+                    dishCard.setMinHeight(50);
+                    dishCard.setMinWidth(75);
 
                     Image image = new Image(dish.getImage());
                     ImageView dishImage = new ImageView();
