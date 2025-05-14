@@ -64,12 +64,13 @@ public class RegisterController {
 
         // Create a new User and prepare it to be sent to the db
         String hashedPassword = BCrypt.hashpw(submitPassword, BCrypt.gensalt());
-        User user = new User(submitName, hashedPassword, "", 0.0);
+        User user = new User(submitName, hashedPassword, "", 0.0, false);
 
         Document userDoc = new Document("name", user.getName())
                 .append("password", user.getPassword())
                 .append("job", user.getJob())
-                .append("workTime", user.getWorkTime());
+                .append("workTime", user.getWorkTime())
+                .append("isAdmin", false);
 
         // Send the new User to the db
         try {

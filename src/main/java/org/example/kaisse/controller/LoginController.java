@@ -50,7 +50,7 @@ public class LoginController {
         }
 
         // Get the infos of the user and put it into a new User
-        User user = new User(doc.getString("name"), doc.getString("password"), doc.getString("job"), doc.getDouble("workTime"));
+        User user = new User(doc.getString("name"), doc.getString("password"), doc.getString("job"), doc.getDouble("workTime"), doc.getBoolean("isAdmin"));
 
         // Check and throw an error if the password doesn't match
         String userPassword = user.getPassword();
