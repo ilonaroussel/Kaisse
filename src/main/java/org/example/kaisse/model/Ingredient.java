@@ -2,10 +2,10 @@ package org.example.kaisse.model;
 
 public class Ingredient {
     private String name;
-    private Double quantity;
-    private Double price ;
+    private Integer quantity;
+    private double price ;
 
-    public Ingredient(String name, Double quantity, Double price) {
+    public Ingredient(String name, Integer quantity, double price) {
         this.name = name;
         this.quantity = quantity;
         this.price = price;
@@ -19,19 +19,19 @@ public class Ingredient {
         this.name = name;
     }
 
-    public Double getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }

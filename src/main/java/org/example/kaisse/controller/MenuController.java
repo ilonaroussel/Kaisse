@@ -5,7 +5,6 @@ import com.mongodb.client.MongoDatabase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,24 +20,17 @@ import java.util.List;
 
 
 public class MenuController {
-
-    @FXML
-    private GridPane form_popup;
-    @FXML
-    private ListView<HBox> dishList;
-    @FXML
-    private TextField nameField;
-    @FXML
-    private TextArea descriptionField;
-    @FXML
-    private TextField priceField;
-    @FXML
-    private TextField imageField;
-    @FXML
-    private TextField ingredientName;
-    @FXML
-    private TextField ingredientQuantity;
-
+    @FXML private GridPane form_ingredient;
+    @FXML private TextArea ingredientQuantityField1;
+    @FXML private TextField ingredientPriceField1;
+    @FXML private TextField ingredientNameField1;
+    @FXML private GridPane form_popup;
+    @FXML private ListView<HBox> dishList;
+    @FXML private TextField nameField;
+    @FXML private TextArea descriptionField;
+    @FXML private TextField priceField;
+    @FXML private TextField imageField;
+    private Ingredient ingredient;
     private ObservableList<HBox> observableDishes;
 
 
@@ -127,5 +119,27 @@ public class MenuController {
 
                     return dishCard;
                 }).toList());
+    }
+    protected Ingredient createIngredient() {
+
+        Dialog<Void> dialog = new Dialog<>();
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialog.setHeight(500);
+        dialog.setWidth(500);
+        dialogPane.setContent(form_ingredient);
+        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        form_ingredient.setVisible(true);
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                String name = ingredientNameField1.getText();
+                Integer quantity = Integer.parseInt(ingredientQuantityField1.getText());
+                double price = Double.parseDouble(ingredientPriceField1.getText());
+                ingredient = new Ingredient(name,quantity,price);
+            }
+            return null;
+        });
+        dialog.showAndWait();
+        form_popup.setVisible(false);
+        return ingredient;
     }
 }
