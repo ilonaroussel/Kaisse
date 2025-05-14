@@ -5,44 +5,39 @@ import com.mongodb.client.MongoDatabase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.example.kaisse.Main;
+import org.example.kaisse.controller.components.DishCardController;
 import org.example.kaisse.model.Dish;
 import org.example.kaisse.model.Ingredient;
 
-import java.text.DecimalFormat;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MenuController {
-
-    private static final DecimalFormat df = new DecimalFormat("0.00");
-
-    @FXML
-    private GridPane form_popup;
-    @FXML
-    private ListView<HBox> dishList;
-    @FXML
-    private TextField nameField;
-    @FXML
-    private TextArea descriptionField;
-    @FXML
-    private TextField priceField;
-    @FXML
-    private TextField imageField;
-    @FXML
-    private TextField ingredientName;
-    @FXML
-    private TextField ingredientQuantity;
-
+    @FXML private GridPane form_ingredient;
+    @FXML private TextArea ingredientQuantityField1;
+    @FXML private TextField ingredientPriceField1;
+    @FXML private TextField ingredientNameField1;
+    @FXML private GridPane form_popup;
+    @FXML private ListView<HBox> dishList;
+    @FXML private TextField nameField;
+    @FXML private TextArea descriptionField;
+    @FXML private TextField priceField;
+    @FXML private TextField imageField;
+    private Ingredient ingredient;
     private ObservableList<HBox> observableDishes;
+    private ArrayList< Ingredient> ingredients = new ArrayList<>();
 
 
 
@@ -59,36 +54,32 @@ public class MenuController {
             if (dialogButton == ButtonType.OK) {
                 String name = nameField.getText();
                 String description = descriptionField.getText();
-                float price = Float.parseFloat(priceField.getText());
+                double price = Float.parseFloat(priceField.getText());
                 String image = imageField.getText();
-                List< Ingredient> ingredients = new ArrayList<>();
-                addDish(name, description, price, image);
+
+                addDish(name, description, price, image, ingredients);
             }
             return null;
         });
         formDialog.showAndWait();
         form_popup.setVisible(false);
     }
-    
+
     @FXML
-    public void addDish(String name, String description, float price, String image) {
+    public void addDish(String name, String description, Double price, String image, ArrayList<Ingredient> ingredientList) {
 
         MongoDatabase database = Main.database;
             MongoCollection<Document> collection = database.getCollection("Dish");
 
-            Document dish = new Document("name", name)
-                    .append("description", description)
-                    .append("price", price)
-                    .append("image", image);
+            Dish finalDish = new Dish(ObjectId.get(), name,description,price,image, ingredientList);
 
-            //Réinitialise les champs
             nameField.clear();
             descriptionField.clear();
             priceField.clear();
             imageField.clear();
 
         try {
-            collection.insertOne(dish);
+            collection.insertOne(finalDish.convertToDocument());
             observableDishes.setAll(getAllDishes(database));
         } catch (Exception e) {
             System.out.println("Fail Insert: " + e);
@@ -123,12 +114,69 @@ public class MenuController {
                     dishImage.setImage(image);
 
                     Label dishName = new Label(dish.getName());
-                    Label dishPrice = new Label(dish.getPrice() + "€");
+                    Label dishPrice = new Label(String.format("%.2f€", dish.getPrice()));
                     Label dishDescription = new Label(dish.getDescription());
+
 
                     dishCard.getChildren().addAll(dishImage, dishName, dishPrice, dishDescription);
 
+                        dishCard.setOnMouseClicked(_ -> {
+                            try {
+                                displayDishCard(dish);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+
+
                     return dishCard;
                 }).toList());
+    }
+
+    protected void displayDishCard(Dish displayedDish) throws IOException {
+        Dialog<Void> dialog = new Dialog<>();
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialog.setHeight(500);
+        dialog.setWidth(750);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/kaisse/components/dish-card.fxml"));
+        AnchorPane cardContent = loader.load();
+        DishCardController controller = loader.getController();
+        controller.setDish(displayedDish);
+
+        dialogPane.setContent(cardContent);
+        dialogPane.getButtonTypes().add(ButtonType.CLOSE);
+        dialog.showAndWait();
+    }
+
+    @FXML
+    protected void createIngredient() {
+
+        Dialog<Void> dialog = new Dialog<>();
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialog.setHeight(500);
+        dialog.setWidth(700);
+
+        dialogPane.setContent(form_ingredient);
+        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        form_ingredient.setVisible(true);
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                String name = ingredientNameField1.getText();
+                Integer quantity = Integer.parseInt(ingredientQuantityField1.getText());
+                double price = Double.parseDouble(ingredientPriceField1.getText());
+                ingredient = new Ingredient(name,quantity,price);
+            }
+            return null;
+        });
+        dialog.showAndWait();
+        form_ingredient.setVisible(false);
+        ingredients.add(ingredient);
+        System.out.println(ingredients);
+
+        ingredientNameField1.clear();
+        ingredientQuantityField1.clear();
+        ingredientPriceField1.clear();
+
     }
 }

@@ -19,6 +19,8 @@ module org.example.kaisse {
 
     opens org.example.kaisse to javafx.fxml;
     exports org.example.kaisse;
-    exports org.example.kaisse.controller;
     opens org.example.kaisse.controller to javafx.fxml;
+    exports org.example.kaisse.controller;
+    opens org.example.kaisse.controller.components to javafx.fxml;
+    exports org.example.kaisse.controller.components;
 }
