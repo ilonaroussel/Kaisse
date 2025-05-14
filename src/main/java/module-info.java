@@ -14,6 +14,8 @@ module org.example.kaisse {
     requires io.github.cdimascio.dotenv.java;
     requires java.desktop;
     requires jbcrypt;
+    requires javafx.swing;
+    requires org.apache.pdfbox;
 
     opens org.example.kaisse to javafx.fxml;
     exports org.example.kaisse;
