@@ -1,5 +1,7 @@
 package org.example.kaisse.model;
 
+import org.bson.Document;
+
 public class Ingredient {
     private String name;
     private Integer quantity;
@@ -10,6 +12,13 @@ public class Ingredient {
         this.quantity = quantity;
         this.price = price;
     }
+    public Document transformIngredientsIntoDocument() {
+        return new Document()
+                .append("name", name)
+                .append("quantity", quantity)
+                .append("price", price);
+    }
+
 
     public String getName() {
         return name;

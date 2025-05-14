@@ -4,6 +4,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Dish {
     private final ObjectId id;
@@ -39,6 +40,27 @@ public class Dish {
                 doc.getString("image")
         );
     }
+
+    public Document transformDishIntoDocument() {
+        Document doc = new Document()
+                .append("name", name)
+                .append("description", description)
+                .append("price", price)
+                .append("image", image);
+
+        if (ingredients != null && !ingredients.isEmpty()) {
+            List<Document> ingredientsDocs = ingredients.stream()
+                    .map(Ingredient::transformIngredientsIntoDocument)
+                    .toList();
+            doc.append("ingredients", ingredientsDocs);
+        }
+
+        return doc;
+    }
+
+
+
+
 
     public ObjectId getId() {
         return id;

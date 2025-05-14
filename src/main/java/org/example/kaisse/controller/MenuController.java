@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.example.kaisse.Main;
 import org.example.kaisse.model.Dish;
 import org.example.kaisse.model.Ingredient;
@@ -32,6 +33,7 @@ public class MenuController {
     @FXML private TextField imageField;
     private Ingredient ingredient;
     private ObservableList<HBox> observableDishes;
+    private ArrayList< Ingredient> ingredients = new ArrayList<>();
 
 
 
@@ -48,36 +50,32 @@ public class MenuController {
             if (dialogButton == ButtonType.OK) {
                 String name = nameField.getText();
                 String description = descriptionField.getText();
-                float price = Float.parseFloat(priceField.getText());
+                double price = Float.parseFloat(priceField.getText());
                 String image = imageField.getText();
-                List< Ingredient> ingredients = new ArrayList<>();
-                addDish(name, description, price, image);
+
+                addDish(name, description, price, image, ingredients);
             }
             return null;
         });
         formDialog.showAndWait();
         form_popup.setVisible(false);
     }
-    
+
     @FXML
-    public void addDish(String name, String description, float price, String image) {
+    public void addDish(String name, String description, Double price, String image, ArrayList<Ingredient> ingredientList) {
 
         MongoDatabase database = Main.database;
             MongoCollection<Document> collection = database.getCollection("Dish");
 
-            Document dish = new Document("name", name)
-                    .append("description", description)
-                    .append("price", price)
-                    .append("image", image);
+            Dish finalDish = new Dish(ObjectId.get(), name,description,price,image, ingredientList);
 
-            //Réinitialise les champs
             nameField.clear();
             descriptionField.clear();
             priceField.clear();
             imageField.clear();
 
         try {
-            collection.insertOne(dish);
+            collection.insertOne(finalDish.transformDishIntoDocument());
             observableDishes.setAll(getAllDishes(database));
         } catch (Exception e) {
             System.out.println("Fail Insert: " + e);
@@ -120,12 +118,15 @@ public class MenuController {
                     return dishCard;
                 }).toList());
     }
-    protected Ingredient createIngredient() {
+
+    @FXML
+    protected void createIngredient() {
 
         Dialog<Void> dialog = new Dialog<>();
         DialogPane dialogPane = dialog.getDialogPane();
         dialog.setHeight(500);
         dialog.setWidth(500);
+
         dialogPane.setContent(form_ingredient);
         dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         form_ingredient.setVisible(true);
@@ -139,7 +140,13 @@ public class MenuController {
             return null;
         });
         dialog.showAndWait();
-        form_popup.setVisible(false);
-        return ingredient;
+        form_ingredient.setVisible(false);
+        ingredients.add(ingredient);
+        System.out.println(ingredients);
+
+        ingredientNameField1.clear();
+        ingredientQuantityField1.clear();
+        ingredientPriceField1.clear();
+
     }
 }
