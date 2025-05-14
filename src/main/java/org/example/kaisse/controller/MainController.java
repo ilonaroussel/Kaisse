@@ -6,7 +6,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import org.example.kaisse.Main;
 import org.example.kaisse.SceneManager;
-import org.example.kaisse.model.User;
 
 
 import java.io.IOException;
@@ -19,7 +18,7 @@ public class MainController implements Initializable {
 
     @FXML
     protected void onHelloButtonClick(ActionEvent event) throws IOException  {
-        SceneManager.changeScene("login-view", event);
+        SceneManager.changeScene("login-view.fxml", event);
     }
 
     @Override
