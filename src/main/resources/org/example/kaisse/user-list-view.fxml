@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.kaisse.controller.UserListController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="800.0" minWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.kaisse.controller.UserListController">
+    <children>
+        <GridPane fx:id="form_popup" alignment="CENTER" layoutX="199.0" layoutY="115.0" prefWidth="201.0" visible="false" vgap="10" hgap="10">
+            <children>
+                <Label alignment="CENTER" text="Name:" textAlignment="RIGHT" />
+                <TextField fx:id="nameField" GridPane.columnIndex="1" />
+                <Label alignment="CENTER" layoutX="10.0" text="Password:" textAlignment="RIGHT" GridPane.rowIndex="1" />
+                <TextField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" promptText="Only edit if forgot"/>
+                <Label alignment="CENTER" layoutX="10.0" text="Job:" textAlignment="RIGHT" GridPane.rowIndex="2" />
+                <TextField fx:id="jobField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label alignment="CENTER" layoutX="10.0" text="Work Time:" textAlignment="RIGHT" GridPane.rowIndex="3" />
+                <TextField fx:id="workTimeField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label alignment="CENTER" layoutX="10.0" text="is Admin:" textAlignment="RIGHT" GridPane.rowIndex="4" />
+                <CheckBox fx:id="isAdminCheckBox" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            </children>
+        </GridPane>
+        <ListView fx:id="usersList" AnchorPane.topAnchor="50.0"
+                  AnchorPane.bottomAnchor="10.0"
+                  AnchorPane.leftAnchor="10.0"
+                  AnchorPane.rightAnchor="10.0" />
+    </children>
 </AnchorPane>
