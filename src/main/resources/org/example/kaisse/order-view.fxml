@@ -9,6 +9,5 @@
     <Button fx:id="ajouterTableButton" layoutX="440.0" layoutY="91.0" mnemonicParsing="false" onAction="#createOrder" text="Create table" />
     <ChoiceBox fx:id="tableNumber" layoutX="389.0" layoutY="39.0" prefWidth="150.0" />
    <ListView fx:id="dishList" layoutX="380.0" layoutY="130.0" prefHeight="256.0" prefWidth="200.0" />
-   <Label fx:id="totalOrder" layoutX="14.0" layoutY="368.0" text="Total :" />
    <Label fx:id="timerLabel" layoutX="315.0" layoutY="368.0" text="Temps :" />
 </AnchorPane>
