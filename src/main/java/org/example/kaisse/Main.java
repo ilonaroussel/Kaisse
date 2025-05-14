@@ -23,6 +23,7 @@ public class Main extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Kaisse!");
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
     }
 

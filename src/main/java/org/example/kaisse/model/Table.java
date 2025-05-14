@@ -8,20 +8,24 @@ public class Table {
     private Integer number;
     private Integer seats;
     private String emplacement;
+    private Boolean isFree;
 
-    public Table(ObjectId id, Integer number, Integer seats, String emplacement) {
+    public Table(ObjectId id, Integer number, Integer seats, String emplacement, Boolean isFree) {
         this.id = id;
         this.number = number;
         this.seats = seats;
         this.emplacement = emplacement;
+        this.isFree = isFree;
     }
+
 
     public static Table createFromDocument(Document doc) {
         return new Table(
                 doc.getObjectId("_id"),
                 doc.getInteger("number"),
                 doc.getInteger("seats"),
-                doc.getString("emplacement")
+                doc.getString("emplacement"),
+                doc.getBoolean("isFree")
         );
     }
 
@@ -52,4 +56,9 @@ public class Table {
     public void setEmplacement(String emplacement) {
         this.emplacement = emplacement;
     }
+
+    public Boolean getFree() { return isFree; }
+
+    public void setFree(Boolean free) { isFree = free; }
+
 }
