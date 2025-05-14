@@ -2,7 +2,11 @@ package org.example.kaisse.controller;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import org.bson.Document;
 import org.example.kaisse.Main;
 
@@ -17,27 +21,27 @@ public class TableController {
 
     @FXML
     private ListView<String> listTable;
+    @FXML
+    private GridPane form_popup;
+    @FXML
+    private TextField numberField;
+    @FXML
+    private TextField seatsField;
+    @FXML
+    private TextField emplacementField;
+
+    @FXML
+    protected void onTableButtonClick() {
+        form_popup.setVisible(!form_popup.isVisible());
+    }
 
     @FXML
     protected void getAllTablesFromDatabase() {
-        System.out.println("👉 Méthode getAllTablesFromDatabase() appelée");
-
         try {
             MongoDatabase database = Main.database;
-            if (database == null) {
-                System.out.println("❌ ERREUR : Base de données non initialisée !");
-                return;
-            }
-
             MongoCollection<Document> collection = database.getCollection("Table");
-            if (collection == null) {
-                System.out.println("❌ ERREUR : Collection 'Table' introuvable !");
-                return;
-            }
 
             List<Document> documents = collection.find().into(new ArrayList<>());
-            System.out.println("✅ Nombre de documents trouvés : " + documents.size());
-
             for (Document doc : documents) {
                 System.out.println("📄 Document : " + doc.toJson());
             }
@@ -53,7 +57,6 @@ public class TableController {
                         " | Places: " + table.getSeats() +
                         " | Emplacement: " + table.getEmplacement() +
                         " | Libre: " + (table.getFree() ? "Disponible" : "Indisponible");
-
                 System.out.println("🟢 Ajout au ListView : " + display);
                 tableDisplayList.add(display);
             }
@@ -71,4 +74,41 @@ public class TableController {
     public void initialize() {
         getAllTablesFromDatabase();
     }
+
+    @FXML
+    public void addTable() {
+        try {
+            Integer number = Integer.parseInt(numberField.getText());
+            Integer seats = Integer.parseInt(seatsField.getText());
+            String emplacement = emplacementField.getText();
+
+            if (emplacement.isEmpty()) {
+                System.out.println("Emplacement vide.");
+                return;
+            }
+
+            MongoDatabase database = Main.database;
+            MongoCollection<Document> collection = database.getCollection("Table");
+
+            Document dish = new Document("number", number)
+                    .append("seats", seats)
+                    .append("emplacement", emplacement)
+                    .append("isFree", true);
+
+            collection.insertOne(dish);
+            System.out.println("✅ Table ajoutée.");
+
+            // Reset champs
+            numberField.clear();
+            seatsField.clear();
+            emplacementField.clear();
+
+            getAllTablesFromDatabase(); // rafraîchir la liste
+
+        } catch (NumberFormatException e) {
+            System.out.println("Entrez des nombres valides pour le numéro et les places.");
+        } catch (Exception e) {
+            System.out.println("Erreur d'insertion : " + e.getMessage());
+        }
+    };
 }
