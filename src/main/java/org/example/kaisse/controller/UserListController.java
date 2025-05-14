@@ -5,6 +5,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -18,6 +19,7 @@ import org.example.kaisse.SceneManager;
 import org.example.kaisse.model.User;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +29,14 @@ public class UserListController {
     @FXML private GridPane form_popup;
     @FXML private ListView<HBox> usersList;
     @FXML private TextField nameField;
-    @FXML private TextField passwordField;
+    @FXML private PasswordField passwordField;
     @FXML private TextField jobField;
     @FXML private TextField workTimeField;
     @FXML private CheckBox isAdminCheckBox;
+
+    @FXML protected void handleCreateUser(ActionEvent event) throws IOException {
+        SceneManager.changeScene("create-user-view", event);
+    }
 
     @FXML protected void onUserClick(User user) {
         Dialog<Void> formDialog = new Dialog<>();

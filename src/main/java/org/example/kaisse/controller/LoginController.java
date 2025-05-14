@@ -69,8 +69,4 @@ public class LoginController {
         SceneManager.changeScene("main-view", event);
 
     }
-
-    @FXML public void handleRegisterClick(MouseEvent event) throws IOException {
-        SceneManager.changeScene("register-view", event);
-    }
 }

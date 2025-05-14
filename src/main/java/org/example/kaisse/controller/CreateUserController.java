@@ -16,7 +16,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.io.IOException;
 import java.util.Objects;
 
-public class RegisterController {
+public class CreateUserController {
     @FXML private TextField name;
     @FXML private TextField password;
     @FXML private TextField confirmPassword;
@@ -84,7 +84,7 @@ public class RegisterController {
 
     }
 
-    @FXML public void handleLoginClick(MouseEvent event) throws IOException {
-        SceneManager.changeScene("login-view", event);
+    @FXML public void handleBackClick(MouseEvent event) throws IOException {
+        SceneManager.changeScene("user-list-view", event);
     }
 }
