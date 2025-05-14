@@ -1,6 +1,41 @@
 package org.example.kaisse.model;
 
+import org.bson.Document;
+
 public class User {
+
+    public User(String name, String password, String job, Double workTime, Boolean isAdmin) {
+        this.name = name;
+        this.password = password;
+        this.job = job;
+        this.workTime = workTime;
+        this.isAdmin = isAdmin;
+    }
+
+    private String name;
+    private String password;
+    private String job;
+    private Double workTime;
+    private Boolean isAdmin;
+
+    public static User createFromDocument(Document doc) {
+        return new User(
+                doc.getString("name"),
+                doc.getString("password"),
+                doc.getString("job"),
+                doc.get("workTime", Double.class),
+                doc.getBoolean("isAdmin")
+        );
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
+    }
+
     public String getName() {
         return name;
     }
@@ -32,16 +67,4 @@ public class User {
     public void setWorkTime(Double workTime) {
         this.workTime = workTime;
     }
-
-    public User(String name, String password, String job, Double workTime) {
-        this.name = name;
-        this.password = password;
-        this.job = job;
-        this.workTime = workTime;
-    }
-
-    private String name;
-    private String password;
-    private String job;
-    private Double workTime;
 }

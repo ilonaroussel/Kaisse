@@ -10,5 +10,6 @@
   </padding>
 
   <Label fx:id="loggedUserName" />
-  <Button onAction="#onHelloButtonClick" text="Hello!" />
+  <Button onAction="#handleLogout" text="Logout" />
+  <Button fx:id="userListButton" onAction="#goToUserList" text="User List" visible="false" />
 </VBox>

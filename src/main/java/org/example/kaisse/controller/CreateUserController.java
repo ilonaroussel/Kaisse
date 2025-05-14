@@ -14,10 +14,12 @@ import org.example.kaisse.model.User;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
+import java.util.Objects;
 
-public class LoginController {
+public class CreateUserController {
     @FXML private TextField name;
     @FXML private TextField password;
+    @FXML private TextField confirmPassword;
 
     @FXML protected void handleSubmit(ActionEvent event) throws IOException {
 
@@ -27,46 +29,62 @@ public class LoginController {
         // Get the TextFiled data when the submit button is clicked
         String submitName = name.getText();
         String submitPassword = password.getText();
+        String submitConfirmPassword = confirmPassword.getText();
 
         // Check and Throw an error if a field is empty
-        if (submitName.trim().isEmpty() || submitPassword.trim().isEmpty()) {
+        if (submitName.trim().isEmpty() || submitPassword.trim().isEmpty() || submitConfirmPassword.trim().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Field Error");
             alert.setHeaderText(null);
-            alert.setContentText("Please fill in all the fields.");
+            alert.setContentText("Please fill in all the fields");
             alert.showAndWait();
             return;
         }
 
-        // Check and Throw an error if the name doesn't exist
+        // Check and Throw an error if the name already exist
         Document doc = collection.find(new Document("name", submitName)).first();
-        if (doc == null) {
+        if (doc != null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Login Error");
+            alert.setTitle("Register Error");
             alert.setHeaderText(null);
-            alert.setContentText("User not found");
+            alert.setContentText("A user with this name already exist");
             alert.showAndWait();
             return;
         }
 
-        // Get the infos of the user and put it into a new User
-        User user = new User(doc.getString("name"), doc.getString("password"), doc.getString("job"), doc.getDouble("workTime"), doc.getBoolean("isAdmin"));
-
-        // Check and throw an error if the password doesn't match
-        String userPassword = user.getPassword();
-        if (!BCrypt.checkpw(submitPassword, userPassword)) {
+        // Check and Throw an if the confirmPassword doesn't match with the password
+        if (!Objects.equals(submitPassword, submitConfirmPassword)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Login Error");
+            alert.setTitle("Register Error");
             alert.setHeaderText(null);
             alert.setContentText("Password does not match");
             alert.showAndWait();
             return;
         }
 
-        System.out.println(user.getName());
-        Main.loggedUser = user;
+        // Create a new User and prepare it to be sent to the db
+        String hashedPassword = BCrypt.hashpw(submitPassword, BCrypt.gensalt());
+        User user = new User(submitName, hashedPassword, "", 0.0, false);
+
+        Document userDoc = new Document("name", user.getName())
+                .append("password", user.getPassword())
+                .append("job", user.getJob())
+                .append("workTime", user.getWorkTime())
+                .append("isAdmin", false);
+
+        // Send the new User to the db
+        try {
+            collection.insertOne(userDoc);
+            System.out.println("Inserted: " + user);
+        } catch (Exception e) {
+            System.out.println("Fail Insert: " + e);
+        }
 
         SceneManager.changeScene("main-view", event);
 
+    }
+
+    @FXML public void handleBackClick(MouseEvent event) throws IOException {
+        SceneManager.changeScene("user-list-view", event);
     }
 }

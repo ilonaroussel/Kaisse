@@ -1,6 +1,6 @@
 package org.example.kaisse;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class SceneManager {
-    public static void changeScene(String view, ActionEvent event) throws IOException {
+    public static void changeScene(String view, Event event) throws IOException {
         String viewPath = "/org/example/kaisse/";
         String fullPath = viewPath.concat(view);
         Parent root = FXMLLoader.load(Objects.requireNonNull(SceneManager.class.getResource(fullPath)));
