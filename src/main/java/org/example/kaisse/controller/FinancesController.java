@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class FinancesController implements Initializable {
-    @FXML Label recettesLabel;
-    @FXML Label depensesLabel;
-    @FXML Label CALabel;
+    @FXML Label winningsLabel;
+    @FXML Label spendingLabel;
+    @FXML Label benefitLabel;
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
@@ -32,7 +32,7 @@ public class FinancesController implements Initializable {
                 .filter(order -> order.getState().equals("VALIDATED"))
                 .toList();
 
-        double recettes = orders
+        double winnings = orders
                 .stream()
                 .map(order -> order
                         .getDishes()
@@ -41,6 +41,23 @@ public class FinancesController implements Initializable {
                         .reduce((double) 0, Double::sum))
                 .reduce((double) 0, Double::sum);
 
-        recettesLabel.setText(String.format("%.2f€", recettes));
+        winningsLabel.setText(String.format("%.2f€", winnings));
+
+        double spending = orders
+                .stream()
+                .map(order -> order.getDishes()
+                        .stream()
+                        .map(orderDish -> orderDish.getQuantity() * orderDish.getDish().getIngredients()
+                                .stream()
+                                .map(ingredient -> ingredient.getQuantity() * ingredient.getPrice())
+                                .reduce((double) 0, Double::sum))
+                        .reduce((double) 0, Double::sum))
+                .reduce((double) 0, Double::sum);
+
+        spendingLabel.setText(String.format("%.2f€", spending));
+
+        double benefit = winnings - spending;
+
+        benefitLabel.setText(String.format("%.2f€", benefit));
     }
 }

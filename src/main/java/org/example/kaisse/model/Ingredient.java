@@ -1,14 +1,24 @@
 package org.example.kaisse.model;
 
+import org.bson.Document;
+
 public class Ingredient {
     private String name;
-    private Double quantity;
+    private Integer quantity;
     private Double price ;
 
-    public Ingredient(String name, Double quantity, Double price) {
+    public Ingredient(String name, Integer quantity, Double price) {
         this.name = name;
         this.quantity = quantity;
         this.price = price;
+    }
+
+    public static Ingredient createFromDocument(Document doc) {
+        return new Ingredient(
+                doc.getString("name"),
+                doc.getInteger("quantity"),
+                doc.getDouble("price")
+        );
     }
 
     public String getName() {
@@ -19,11 +29,11 @@ public class Ingredient {
         this.name = name;
     }
 
-    public Double getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

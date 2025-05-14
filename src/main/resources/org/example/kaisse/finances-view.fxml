@@ -19,9 +19,9 @@
             <Label text="Recettes" />
             <Label text="Dépenses" GridPane.columnIndex="1" />
             <Label text="Chiffre d'affaire" GridPane.columnIndex="2" />
-            <Label fx:id="recettesLabel" GridPane.rowIndex="1" />
-            <Label fx:id="depensesLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="CALabel" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label fx:id="winningsLabel" GridPane.rowIndex="1" />
+            <Label fx:id="spendingLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="benefitLabel" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>
