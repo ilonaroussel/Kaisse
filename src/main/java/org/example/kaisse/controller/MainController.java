@@ -19,7 +19,7 @@ public class MainController implements Initializable {
 
     @FXML
     protected void onHelloButtonClick(ActionEvent event) throws IOException  {
-        SceneManager.changeScene("login-view", event);
+        SceneManager.changeScene("register-view", event);
     }
 
     @Override

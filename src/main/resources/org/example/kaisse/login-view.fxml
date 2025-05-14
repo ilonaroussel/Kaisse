@@ -17,9 +17,14 @@
             </Label>
 
             <TextField fx:id="name" promptText="Name" maxWidth="200" />
-            <TextField fx:id="password" promptText="Password" maxWidth="200" />
+            <PasswordField fx:id="password" promptText="Password" maxWidth="200" />
 
-            <Button text="Submit" onAction="#handleSubmit" />
+            <HBox alignment="CENTER" spacing="100">
+                <children>
+                    <Label text="register" style="-fx-text-fill: blue; -fx-underline: true;" onMouseClicked="#handleRegisterClick" />
+                    <Button text="Submit" onAction="#handleSubmit" />
+                </children>
+            </HBox>
         </children>
     </VBox>
 

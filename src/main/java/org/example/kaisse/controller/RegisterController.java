@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import org.bson.Document;
 import org.example.kaisse.SceneManager;
 import org.example.kaisse.Main;
@@ -54,5 +55,9 @@ public class RegisterController {
 
         SceneManager.changeScene("main-view", event);
 
+    }
+
+    @FXML public void handleLoginClick(MouseEvent event) throws IOException {
+        SceneManager.changeScene("login-view", event);
     }
 }
