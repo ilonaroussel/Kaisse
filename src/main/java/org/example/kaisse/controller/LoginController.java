@@ -1,12 +1,10 @@
 package org.example.kaisse.controller;
 
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import org.bson.Document;
 import org.example.kaisse.SceneManager;
 import org.example.kaisse.Main;
@@ -15,14 +13,14 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 
+import static com.mongodb.client.model.Filters.eq;
+
 public class LoginController {
     @FXML private TextField name;
     @FXML private TextField password;
 
     @FXML protected void handleSubmit(ActionEvent event) throws IOException {
-
-        MongoDatabase database = Main.database;
-        MongoCollection<Document> collection = database.getCollection("User");
+        MongoCollection<Document> collection = Main.database.getCollection("User");
 
         // Get the TextFiled data when the submit button is clicked
         String submitName = name.getText();
@@ -30,43 +28,39 @@ public class LoginController {
 
         // Check and Throw an error if a field is empty
         if (submitName.trim().isEmpty() || submitPassword.trim().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Field Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Please fill in all the fields.");
-            alert.showAndWait();
+            createDialog("Please fill in all the fields.");
+
             return;
         }
 
         // Check and Throw an error if the name doesn't exist
-        Document doc = collection.find(new Document("name", submitName)).first();
+        Document doc = collection.find(eq("name", submitName)).first();
         if (doc == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Login Error");
-            alert.setHeaderText(null);
-            alert.setContentText("User not found");
-            alert.showAndWait();
+            createDialog("User not found");
+
             return;
         }
 
         // Get the infos of the user and put it into a new User
-        User user = new User(doc.getString("name"), doc.getString("password"), doc.getString("job"), doc.getDouble("workTime"), doc.getBoolean("isAdmin"));
+        User user = User.createFromDocument(doc);
 
         // Check and throw an error if the password doesn't match
-        String userPassword = user.getPassword();
-        if (!BCrypt.checkpw(submitPassword, userPassword)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Login Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Password does not match");
-            alert.showAndWait();
+        if (!BCrypt.checkpw(submitPassword, user.getPassword())) {
+            createDialog("Password does not match");
+
             return;
         }
 
-        System.out.println(user.getName());
         Main.loggedUser = user;
 
         SceneManager.changeScene("main-view", event);
+    }
 
+    private void createDialog(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Login Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
