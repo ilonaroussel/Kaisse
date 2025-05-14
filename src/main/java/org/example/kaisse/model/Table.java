@@ -6,18 +6,23 @@ public class Table {
     private Integer number;
     private Integer seats;
     private String emplacement;
+    private Boolean isFree;
 
-    public Table(Integer number, Integer seats, String emplacement) {
+
+    public Table(Integer number, Integer seats, String emplacement, Boolean isFree) {
         this.number = number;
         this.seats = seats;
         this.emplacement = emplacement;
+        this.isFree = isFree;
     }
+
 
     public static Table createFromDocument(Document doc) {
         return new Table(
                 Integer.parseInt(doc.get("number").toString()),
                 Integer.parseInt(doc.get("seats").toString()),
-                (String) doc.get("emplacement")
+                (String) doc.get("emplacement"),
+                Boolean.parseBoolean(doc.get("isFree").toString())
         );
     }
 
@@ -44,4 +49,9 @@ public class Table {
     public void setEmplacement(String emplacement) {
         this.emplacement = emplacement;
     }
+
+    public Boolean getFree() { return isFree; }
+
+    public void setFree(Boolean free) { isFree = free; }
+
 }
