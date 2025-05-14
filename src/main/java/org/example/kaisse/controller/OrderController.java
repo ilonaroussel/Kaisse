@@ -1,9 +1,7 @@
 package org.example.kaisse.controller;
 
-import  static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Sorts.ascending;
 
 import com.mongodb.client.*;
 import com.mongodb.client.model.Sorts;
@@ -15,7 +13,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.example.kaisse.Main;
 import org.example.kaisse.model.Dish;
@@ -29,7 +26,7 @@ import java.util.*;
 
 public class OrderController implements Initializable {
     @FXML ListView<VBox> orderList;
-    private final ObservableList<VBox> orderListItems = FXCollections.observableArrayList();
+    private ObservableList<VBox> orderListItems;
 
     @FXML private ChoiceBox<Integer> tableNumber;
 
@@ -48,31 +45,19 @@ public class OrderController implements Initializable {
     }
 
     private void initOrderList() {
+        orderListItems = FXCollections.observableArrayList();
         MongoCollection<Document> orderCollection = Main.database.getCollection("Order");
 
-        /*
-         * Pipeline to format the obtained data as follows:
-         * - Get only the PENDING orders
-         * - The sort is ascending because the elements are added at the start of the ListView,
-         * so the oldest will be at the top of the list
-         * - Find the foreign keys and get all their fields instead of just the ObjectId
-         * */
-        List<Bson> pipeline = Arrays.asList(
-                match(eq("state", "PENDING")),
-                sort(ascending("date")),
-                lookup("Table", "table", "_id", "table"),
-                lookup("Dish", "dishes", "_id", "dishes"));
-
         List<Document> orderDocuments = orderCollection
-                .aggregate(pipeline)
+                .find()
                 .into(new ArrayList<>());
 
-        orderDocuments/*.stream()*/.forEach(element -> {
-            // Converts Document to Order
-            Order order = Order.createFromDocument(element);
-
-            addOrderToList(order);
-        });
+        orderDocuments
+                .stream()
+                .map(Order::createFromDocument)
+                .filter(order -> order.getState().equals("PENDING"))
+                .sorted((a, b) -> b.getDate().compareTo(a.getDate()))
+                .forEach(this::addOrderToList);
 
         orderList.setItems(orderListItems);
     }
@@ -141,21 +126,27 @@ public class OrderController implements Initializable {
         Label tableLabel = new Label(order.getTable().getNumber().toString());
         // Label with the formatted date
         Label dateLabel = new Label(order.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        // Label with the total price
+        Label priceLabel = new Label(String.format("%.2f€", order
+                .getDishes()
+                .stream()
+                .map(orderDish -> orderDish.getQuantity() * orderDish.getDish().getPrice())
+                .reduce((double) 0, Double::sum)));
 
-        Button deleteButton = new Button("❌");
-        deleteButton.setOnAction(_ -> {
+        Button deleteOrderButton = new Button("❌");
+        deleteOrderButton.setOnAction(_ -> {
             order.cancel();
             orderListItems.remove(vbox);
         });
 
-        Button validateButton = new Button("✅");
-        validateButton.setOnAction(_ -> {
+        Button validateOrderButton = new Button("✅");
+        validateOrderButton.setOnAction(_ -> {
             order.validate();
             orderListItems.remove(vbox);
         });
 
         // Add elements to the HBox
-        hbox.getChildren().addAll(tableLabel, dateLabel, deleteButton, validateButton);
+        hbox.getChildren().addAll(tableLabel, dateLabel, priceLabel, deleteOrderButton, validateOrderButton);
 
         ListView<HBox> dishesList = new ListView<>();
         dishesList.setPrefHeight(100);
@@ -163,14 +154,34 @@ public class OrderController implements Initializable {
 
         // Initialize ListView with existing dishes
         ObservableList<HBox> dishListItems = FXCollections.observableArrayList();
-        order.getDishes()/*.stream()*/.forEach(dish -> dishListItems.add(createDishRow(dish, order, dishesList)));
+        order.getDishes()/*.stream()*/.forEach(orderDish -> {
+            // Create a new HBox with the name and the price of the dish
+            HBox box = new HBox(20);
+            box.setPrefWidth(width);
+
+            Label name = new Label(orderDish.getDish().getName() + " x " + orderDish.getQuantity());
+            Label price = new Label(String.format("%.2f€", orderDish.getQuantity() * orderDish.getDish().getPrice()));
+
+            Button deleteDishButton = new Button("❌");
+            deleteDishButton.setOnAction(_ -> {
+                order.removeDish(orderDish);
+
+                ObservableList<HBox> items =  dishesList.getItems();
+                items.remove(box);
+                dishesList.setItems(items);
+            });
+
+            box.getChildren().addAll(name, price, deleteDishButton);
+
+            dishListItems.add(box);
+        });
         dishesList.setItems(dishListItems);
 
         // Add elements to the VBox
         vbox.getChildren().addAll(hbox, dishesList);
 
         // Add HBox to the ListView
-        orderListItems.addFirst(vbox);
+        orderListItems.add(vbox);
     }
 
     @FXML
@@ -204,45 +215,13 @@ public class OrderController implements Initializable {
         Order order = new Order(ObjectId.get(), "PENDING", table, LocalDateTime.now(), new ArrayList<>());
 
         order.insertToDb(); // update db
-        addOrderToList(order); // update orderList
+        initOrderList(); // update orderList
     }
 
     private void addDishToOrder(Dish dish) {
         if (selectedOrderVBox == null) return;
 
-        ListView<HBox> list = (ListView<HBox>) selectedOrderVBox
-                .getChildren() // contains an HBox and a ListView
-                .get(1); // get the ListView
-
-        // Update database
-        selectedOrder.addDish(dish);
-
-        // Add the HBox to the ListView
-        ObservableList<HBox> items = list.getItems();
-        items.add(createDishRow(dish, selectedOrder, list));
-
-        list.setItems(items);
-    }
-
-    public HBox createDishRow(Dish dish, Order order, ListView<HBox> list) {
-        // Create a new HBox with the name and the price of the dish
-        HBox box = new HBox(20);
-        box.setPrefWidth(width);
-
-        Label name = new Label(dish.getName());
-        Label price = new Label(String.format("%.2f€", dish.getPrice()));
-
-        Button deleteButton = new Button("❌");
-        deleteButton.setOnAction(_ -> {
-            order.removeDish(dish);
-
-            ObservableList<HBox> items =  list.getItems();
-            items.remove(box);
-            list.setItems(items);
-        });
-
-        box.getChildren().addAll(name, price, deleteButton);
-
-        return box;
+        selectedOrder.addDish(dish); // update db
+        initOrderList(); // update view
     }
 }
