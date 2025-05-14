@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="202.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.kaisse.controller.components.DishCardController">
+   <children>
+      <ImageView fx:id="dishImage" fitHeight="200.0" fitWidth="300.0" layoutX="14.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="dishName" layoutX="336.0" layoutY="14.0" prefHeight="17.0" prefWidth="248.0" text="Nom du plat" />
+      <Label fx:id="dishPrice" layoutX="656.0" layoutY="14.0" text="Prix" />
+      <Label fx:id="dishDescription" layoutX="336.0" layoutY="31.0" prefHeight="32.0" prefWidth="364.0" text="La decription rapide du bon petit plat sa mère miam miam trop bon" />
+      <VBox fx:id="dishIngredientList" layoutX="336.0" layoutY="63.0" prefHeight="200.0" prefWidth="356.0" />
+   </children>
+</AnchorPane>

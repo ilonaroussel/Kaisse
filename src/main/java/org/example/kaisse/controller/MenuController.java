@@ -5,17 +5,21 @@ import com.mongodb.client.MongoDatabase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.example.kaisse.Main;
+import org.example.kaisse.controller.components.DishCardController;
 import org.example.kaisse.model.Dish;
 import org.example.kaisse.model.Ingredient;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,13 +114,39 @@ public class MenuController {
                     dishImage.setImage(image);
 
                     Label dishName = new Label(dish.getName());
-                    Label dishPrice = new Label(dish.getPrice() + "€");
+                    Label dishPrice = new Label(String.format("%.2f€", dish.getPrice()));
                     Label dishDescription = new Label(dish.getDescription());
+
 
                     dishCard.getChildren().addAll(dishImage, dishName, dishPrice, dishDescription);
 
+                        dishCard.setOnMouseClicked(_ -> {
+                            try {
+                                displayDishCard(dish);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+
+
                     return dishCard;
                 }).toList());
+    }
+
+    protected void displayDishCard(Dish displayedDish) throws IOException {
+        Dialog<Void> dialog = new Dialog<>();
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialog.setHeight(500);
+        dialog.setWidth(750);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/kaisse/components/dish-card.fxml"));
+        AnchorPane cardContent = loader.load();
+        DishCardController controller = loader.getController();
+        controller.setDish(displayedDish);
+
+        dialogPane.setContent(cardContent);
+        dialogPane.getButtonTypes().add(ButtonType.CLOSE);
+        dialog.showAndWait();
     }
 
     @FXML
@@ -125,7 +155,7 @@ public class MenuController {
         Dialog<Void> dialog = new Dialog<>();
         DialogPane dialogPane = dialog.getDialogPane();
         dialog.setHeight(500);
-        dialog.setWidth(500);
+        dialog.setWidth(700);
 
         dialogPane.setContent(form_ingredient);
         dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);

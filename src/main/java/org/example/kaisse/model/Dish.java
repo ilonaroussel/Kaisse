@@ -32,14 +32,28 @@ public class Dish {
     }
 
     public static Dish createFromDocument(Document doc) {
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        List<Document> ingredientDocs = doc.getList("ingredients", Document.class);
+
+        if (ingredientDocs != null) {
+            for (Document ingDoc : ingredientDocs) {
+                String name = ingDoc.getString("name");
+                Integer quantity = ingDoc.getInteger("quantity");
+                double price = ingDoc.getDouble("price");
+                ingredients.add(new Ingredient(name, quantity, price));
+            }
+        }
+
         return new Dish(
                 doc.getObjectId("_id"),
                 doc.getString("name"),
                 doc.getString("description"),
                 doc.get("price", Double.class),
-                doc.getString("image")
+                doc.getString("image"),
+                ingredients
         );
     }
+
 
     public Document transformDishIntoDocument() {
         Document doc = new Document()
