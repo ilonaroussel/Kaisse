@@ -85,6 +85,24 @@ public class Order {
         }
     }
 
+    public void removeDish(Dish dish) {
+        MongoCollection<Document> collection = Main.database.getCollection("Order");
+
+        this.dishes.remove(dish);
+        Bson filter = Filters.eq("_id", this.id);
+        Bson update = Updates.set("dishes", this.dishes
+                .stream()
+                .map(Dish::getId)
+                .toList());
+
+        try {
+            collection.updateOne(filter, update);
+            System.out.println("Updated: " + this);
+        } catch (Exception e) {
+            System.out.println("Fail Update: " + e);
+        }
+    }
+
     public void cancel() {
         MongoCollection<Document> collection = Main.database.getCollection("Order");
 

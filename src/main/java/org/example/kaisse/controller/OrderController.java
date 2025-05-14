@@ -163,7 +163,7 @@ public class OrderController implements Initializable {
 
         // Initialize ListView with existing dishes
         ObservableList<HBox> dishListItems = FXCollections.observableArrayList();
-        order.getDishes()/*.stream()*/.forEach(dish -> dishListItems.add(createDishRow(dish)));
+        order.getDishes()/*.stream()*/.forEach(dish -> dishListItems.add(createDishRow(dish, order, dishesList)));
         dishesList.setItems(dishListItems);
 
         // Add elements to the VBox
@@ -219,12 +219,12 @@ public class OrderController implements Initializable {
 
         // Add the HBox to the ListView
         ObservableList<HBox> items = list.getItems();
-        items.add(createDishRow(dish));
+        items.add(createDishRow(dish, selectedOrder, list));
 
         list.setItems(items);
     }
 
-    public HBox createDishRow(Dish dish) {
+    public HBox createDishRow(Dish dish, Order order, ListView<HBox> list) {
         // Create a new HBox with the name and the price of the dish
         HBox box = new HBox(20);
         box.setPrefWidth(width);
@@ -232,7 +232,16 @@ public class OrderController implements Initializable {
         Label name = new Label(dish.getName());
         Label price = new Label(String.format("%.2f€", dish.getPrice()));
 
-        box.getChildren().addAll(name, price);
+        Button deleteButton = new Button("❌");
+        deleteButton.setOnAction(_ -> {
+            order.removeDish(dish);
+
+            ObservableList<HBox> items =  list.getItems();
+            items.remove(box);
+            list.setItems(items);
+        });
+
+        box.getChildren().addAll(name, price, deleteButton);
 
         return box;
     }
