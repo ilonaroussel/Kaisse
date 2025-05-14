@@ -24,10 +24,22 @@ public class LoginController {
         MongoDatabase database = Main.database;
         MongoCollection<Document> collection = database.getCollection("User");
 
+        // Get the TextFiled data when the submit button is clicked
         String submitName = name.getText();
         String submitPassword = password.getText();
-        Document doc = collection.find(new Document("name", submitName)).first();
 
+        // Check and Throw an error if a field is empty
+        if (submitName.trim().isEmpty() || submitPassword.trim().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Field Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Please fill in all the fields.");
+            alert.showAndWait();
+            return;
+        }
+
+        // Check and Throw an error if the name doesn't exist
+        Document doc = collection.find(new Document("name", submitName)).first();
         if (doc == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Login Error");
@@ -37,10 +49,11 @@ public class LoginController {
             return;
         }
 
+        // Get the infos of the user and put it into a new User
         User user = new User(doc.getString("name"), doc.getString("password"), doc.getString("job"), doc.getDouble("workTime"));
 
+        // Check and throw an error if the password doesn't match
         String userPassword = user.getPassword();
-
         if (!BCrypt.checkpw(submitPassword, userPassword)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Login Error");
