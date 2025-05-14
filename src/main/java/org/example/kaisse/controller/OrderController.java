@@ -7,7 +7,6 @@ import com.mongodb.client.*;
 import com.mongodb.client.model.Sorts;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
