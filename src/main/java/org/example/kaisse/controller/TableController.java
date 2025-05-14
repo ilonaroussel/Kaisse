@@ -82,7 +82,7 @@ public class TableController {
             Document dish = new Document("number", number)
                     .append("seats", seats)
                     .append("emplacement", emplacement)
-                    .append("isFree", true);
+                    .append("isFree", false);
 
             collection.insertOne(dish);
             System.out.println("Table ajoutée.");

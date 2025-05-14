@@ -7,6 +7,8 @@ import static com.mongodb.client.model.Sorts.ascending;
 
 import com.mongodb.client.*;
 import com.mongodb.client.model.Sorts;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -28,12 +31,24 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class OrderController implements Initializable {
-    @FXML ListView<VBox> orderList;
+
+    @FXML
+    private Label timerLabel;
+
+    @FXML
+    private Button ajouterTableButton;
+
+    private int totalSeconds = 25 * 60;
+
+    @FXML
+    ListView<VBox> orderList;
     private final ObservableList<VBox> orderListItems = FXCollections.observableArrayList();
 
-    @FXML private ChoiceBox<Integer> tableNumber;
+    @FXML
+    private ChoiceBox<Integer> tableNumber;
 
-    @FXML ListView<HBox> dishList;
+    @FXML
+    ListView<HBox> dishList;
 
     private Order selectedOrder;
     private VBox selectedOrderVBox;
@@ -45,7 +60,33 @@ public class OrderController implements Initializable {
         initOrderList();
         initTableChoiceBox();
         initDishList();
+        initializeChronometer();
     }
+
+    @FXML
+    public void initializeChronometer() {
+    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+        totalSeconds--;
+
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+
+        timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+
+        if (totalSeconds <= 15 * 60) {
+            ajouterTableButton.setDisable(true);
+        }
+
+        if (totalSeconds <= 0) {
+            timerLabel.setText("00:00");
+        }
+
+    }));
+
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+}
+
 
     private void initOrderList() {
         MongoCollection<Document> orderCollection = Main.database.getCollection("Order");
