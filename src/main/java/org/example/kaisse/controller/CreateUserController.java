@@ -78,7 +78,7 @@ public class CreateUserController {
             System.out.println("Fail Insert: " + e);
         }
 
-        SceneManager.changeScene("main-view", event);
+        SceneManager.changeScene("main-view.fxml", event);
     }
 
     private void createDialog(String message) {

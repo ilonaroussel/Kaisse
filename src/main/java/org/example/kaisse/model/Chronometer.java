@@ -14,7 +14,6 @@ public class Chronometer extends Thread {
 
             synchronized (this) {
                 remainingTime--; // Décrémenter chaque seconde
-                System.out.println("Temps restant : " + remainingTime + " secondes");
             }
         }
     }

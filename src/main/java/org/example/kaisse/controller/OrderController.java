@@ -29,27 +29,26 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class OrderController implements Initializable {
-    @FXML
-    private Label timerLabel;
-
-    @FXML
-    private Button ajouterTableButton;
-
+    @FXML private Label timerLabel;
+    @FXML private Button ajouterTableButton;
     private Chronometer chronometer;
 
-    @FXML
-    ListView<VBox> orderList;
+    @FXML ListView<VBox> orderList;
     private ObservableList<VBox> orderListItems;
-
-    @FXML
-    private ChoiceBox<Integer> tableNumber;
-
-    @FXML
-    ListView<HBox> dishList;
+    @FXML private ChoiceBox<Integer> tableNumber;
+    @FXML ListView<HBox> dishList;
 
     private Order selectedOrder;
     private VBox selectedOrderVBox;
+
     final double width = 200;
+    final ObservableList<String> states = FXCollections.observableArrayList(
+            "CANCELED",
+            "PENDING",
+            "READY",
+            "DELIVERED",
+            "VALIDATED"
+    );
 
     // Method that triggers on controller load
     @FXML
@@ -100,7 +99,11 @@ public class OrderController implements Initializable {
         orderDocuments
                 .stream()
                 .map(Order::createFromDocument)
-                .filter(order -> order.getState().equals("PENDING"))
+                .filter(order -> {
+                    String state = order.getState();
+
+                    return state.equals("PENDING") || state.equals("READY") || state.equals("DELIVERED");
+                })
                 .sorted((a, b) -> b.getDate().compareTo(a.getDate()))
                 .forEach(this::addOrderToList);
 
@@ -178,20 +181,16 @@ public class OrderController implements Initializable {
                 .map(orderDish -> orderDish.getQuantity() * orderDish.getDish().getPrice())
                 .reduce((double) 0, Double::sum)));
 
-        Button deleteOrderButton = new Button("❌");
-        deleteOrderButton.setOnAction(_ -> {
-            order.cancel();
-            orderListItems.remove(vbox);
-        });
+        ChoiceBox<String> stateChoice = new ChoiceBox<>(states);
+        stateChoice.setValue(order.getState());
+        stateChoice.setOnAction(_ -> {
+            order.changeState(stateChoice.getValue());
 
-        Button validateOrderButton = new Button("✅");
-        validateOrderButton.setOnAction(_ -> {
-            order.validate();
-            orderListItems.remove(vbox);
+            initOrderList();
         });
 
         // Add elements to the HBox
-        hbox.getChildren().addAll(tableLabel, dateLabel, priceLabel, deleteOrderButton, validateOrderButton);
+        hbox.getChildren().addAll(tableLabel, dateLabel, priceLabel, stateChoice);
 
         ListView<HBox> dishesList = new ListView<>();
         dishesList.setPrefHeight(100);
