@@ -1,11 +1,13 @@
 package org.example.kaisse.controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import org.example.kaisse.SceneManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -30,6 +32,10 @@ public class ControlPanelView implements Initializable {
         for (int i = 0; i < 6; i++) {
             loadCard(cardLinks.get(i), i % 2, i / 2);
         }
+    }
+
+    @FXML protected void handleBack(ActionEvent event) throws IOException {
+        SceneManager.changeScene("main-view.fxml", event);
     }
 
     private void loadCard(String link, int x, int y) {

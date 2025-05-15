@@ -39,6 +39,9 @@ public class MainController implements Initializable {
     @FXML protected void goToTable(ActionEvent event) throws IOException  {
         SceneManager.changeScene("table-view.fxml", event);
     }
+    @FXML protected void goToPanel(ActionEvent event) throws IOException  {
+        SceneManager.changeScene("control-panel-view.fxml", event);
+    }
 
 
     @Override public void initialize(URL location, ResourceBundle resources) {

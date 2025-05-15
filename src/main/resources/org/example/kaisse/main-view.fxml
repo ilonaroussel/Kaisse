@@ -17,6 +17,7 @@
 
   <HBox spacing="15" alignment="CENTER">
     <Button fx:id="userListButton" onAction="#goToUserList" text="User List" visible="false" managed="false" />
+    <Button onAction="#goToPanel" text="Control Panel" />
     <Button onAction="#goToFinances" text="Finances" />
     <Button onAction="#goToOrder" text="Order" />
     <Button onAction="#goToTable" text="Table" />
