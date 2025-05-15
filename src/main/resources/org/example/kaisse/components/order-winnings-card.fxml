@@ -13,7 +13,8 @@
       <GridPane layoutX="14.0" layoutY="50.0" prefHeight="152.0" prefWidth="303.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -21,9 +22,11 @@
         </rowConstraints>
          <children>
             <Label prefHeight="42.0" prefWidth="152.0" text="Winnings in becoming" />
-            <Label prefHeight="42.0" prefWidth="152.0" text="Winnings" GridPane.columnIndex="1" />
-            <Label fx:id="winningsInBecoming" prefHeight="42.0" prefWidth="152.0" GridPane.rowIndex="1" />
-            <Label fx:id="winnings" prefHeight="42.0" prefWidth="152.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+             <Label prefHeight="42.0" prefWidth="152.0" text="Winnings" GridPane.columnIndex="1" />
+             <Label prefHeight="42.0" prefWidth="152.0" text="Total winnings" GridPane.columnIndex="2" />
+            <Label fx:id="winningsInBecomingLabel" prefHeight="42.0" prefWidth="152.0" GridPane.rowIndex="1" />
+             <Label fx:id="winningsLabel" prefHeight="42.0" prefWidth="152.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+             <Label fx:id="totalWinningsLabel" prefHeight="42.0" prefWidth="152.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>

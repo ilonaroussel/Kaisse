@@ -18,8 +18,9 @@ import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.not;
 
 public class OrderWinningsController implements Initializable {
-    @FXML Label winningsInBecoming;
-    @FXML Label winnings;
+    @FXML Label winningsInBecomingLabel;
+    @FXML Label winningsLabel;
+    @FXML Label totalWinningsLabel;
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
@@ -33,21 +34,28 @@ public class OrderWinningsController implements Initializable {
                 .filter(order -> order.getDate().toLocalDate().equals(LocalDate.now()))
                 .toList();
 
-        winningsInBecoming.setText(String.format("%.2f€", todayOrders
+        double winningsInBecoming = todayOrders
                 .stream()
                 .filter(order -> {
                     String state = order.getState();
                     return state.equals("PENDING") || state.equals("READY") || state.equals("DELIVERED");
                 })
                 .map(Order::getPrice)
-                .reduce(0.0, Double::sum)
-        ));
+                .reduce(0.0, Double::sum);
 
-        winnings.setText(String.format("%.2f€", todayOrders
+
+        winningsInBecomingLabel.setText(String.format("%.2f€", winningsInBecoming));
+
+        double winnings = todayOrders
                 .stream()
                 .filter(order -> order.getState().equals("VALIDATED"))
                 .map(Order::getPrice)
-                .reduce(0.0, Double::sum)
-        ));
+                .reduce(0.0, Double::sum);
+
+        winningsLabel.setText(String.format("%.2f€", winnings));
+
+        double totalWinnings = winningsInBecoming + winnings;
+
+        totalWinningsLabel.setText(String.format("%.2f€", totalWinnings));
     }
 }
