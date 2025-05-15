@@ -33,7 +33,18 @@ public class ReadyOrdersController implements Initializable {
         documents
                 .stream()
                 .map(Order::createFromDocument)
-                .sorted((a, b) -> b.getDate().compareTo(a.getDate()))
+                .sorted((a, b) -> {
+                    // Sorter by table number ascending
+                    int tableDiff = a.getTable().getNumber() - b.getTable().getNumber();
+                    int tableComparator = Integer.compare(tableDiff, 0); // limit between 1 and -1
+
+                    // Sorter by date descending
+                    int dateDiff = b.getDate().compareTo(a.getDate());
+                    int dateComparator = Integer.compare(dateDiff, 0); // limit between 1 and -1
+
+                    // Sort by date, then by table
+                    return 10 * dateComparator + tableComparator;
+                })
                 .forEach(order -> orderListItems.add(createOrderRow(order)));
 
         deliveredOrdersList.setItems(orderListItems);
