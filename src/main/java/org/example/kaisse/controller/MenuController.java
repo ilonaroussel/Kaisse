@@ -59,7 +59,7 @@ public class MenuController {
             if (dialogButton == ButtonType.OK) {
                 String name = nameField.getText();
                 String description = descriptionField.getText();
-                double price = Float.parseFloat(priceField.getText());
+                double price = Double.parseDouble(priceField.getText());
                 String image = imageField.getText();
 
                 addDish(name, description, price, image, ingredients);
