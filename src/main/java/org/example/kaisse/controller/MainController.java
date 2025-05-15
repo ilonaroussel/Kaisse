@@ -23,6 +23,7 @@ public class MainController implements Initializable {
         SceneManager.changeScene("login-view.fxml", event);
     }
 
+    // Navigation between all pages
     @FXML protected void goToUserList(ActionEvent event) throws IOException  {
         SceneManager.changeScene("user-list-view.fxml", event);
     }
@@ -44,6 +45,7 @@ public class MainController implements Initializable {
         if (Main.loggedUser != null) {
             loggedUserName.setText("Bienvenue " + Main.loggedUser.getName());
 
+            // If the user is admin display the button
             Boolean isAdmin = Main.loggedUser.getAdmin();
             if (isAdmin) {
                 userListButton.setVisible(true);
