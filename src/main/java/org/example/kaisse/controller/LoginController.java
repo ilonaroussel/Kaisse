@@ -27,12 +27,6 @@ public class LoginController {
     @FXML protected void handleSubmit(ActionEvent event) throws IOException {
         MongoCollection<Document> collection = Main.database.getCollection("User");
 
-//        if (true) {
-//            SceneManager.changeScene("login-view.fxml", event);
-//            System.out.println("youyouuuu j'en peu pluuuuuus");
-//            return;
-//        }
-
         // Get the TextFiled data when the submit button is clicked
         String submitName = name.getText();
         String submitPassword = password.getText();

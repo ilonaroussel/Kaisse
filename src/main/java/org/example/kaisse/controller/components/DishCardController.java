@@ -25,7 +25,6 @@ public class DishCardController {
         dishIngredientList.getChildren().clear();
         if (dish.getIngredients() != null) {
             dish.getIngredients().forEach(ingredient -> {
-                System.out.println("coucou");
                 Label label = new Label("- " + ingredient.getName() + " (" + ingredient.getQuantity() + "g)");
                 dishIngredientList.getChildren().add(label);
             });

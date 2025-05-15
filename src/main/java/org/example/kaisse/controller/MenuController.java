@@ -172,7 +172,6 @@ public class MenuController {
         dialog.showAndWait();
         form_ingredient.setVisible(false);
         ingredients.add(ingredient);
-        System.out.println(ingredients);
 
         ingredientNameField1.clear();
         ingredientQuantityField1.clear();
