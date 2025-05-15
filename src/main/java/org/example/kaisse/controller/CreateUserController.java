@@ -78,7 +78,7 @@ public class CreateUserController {
             System.out.println("Fail Insert: " + e);
         }
 
-        SceneManager.changeScene("main-view", event);
+        SceneManager.changeScene("main-view.fxml", event);
     }
 
     private void createDialog(String message) {
@@ -90,6 +90,6 @@ public class CreateUserController {
     }
 
     @FXML public void handleBackClick(MouseEvent event) throws IOException {
-        SceneManager.changeScene("user-list-view", event);
+        SceneManager.changeScene("user-list-view.fxml", event);
     }
 }

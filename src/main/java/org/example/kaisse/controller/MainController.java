@@ -21,11 +21,11 @@ public class MainController implements Initializable {
 
     @FXML protected void handleLogout(ActionEvent event) throws IOException  {
         Main.loggedUser = null;
-        SceneManager.changeScene("register-view", event);
+        SceneManager.changeScene("register-view.fxml", event);
     }
 
     @FXML protected void goToUserList(ActionEvent event) throws IOException  {
-        SceneManager.changeScene("user-list-view", event);
+        SceneManager.changeScene("user-list-view.fxml", event);
     }
 
     @Override public void initialize(URL location, ResourceBundle resources) {
