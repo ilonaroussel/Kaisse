@@ -7,7 +7,8 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.kaisse.controller.FinancesController">
    <children>
-      <Button layoutX="469.0" layoutY="46.0" mnemonicParsing="false" onAction="#savePdf" text="Enregistrer en pdf" />
+       <Button onAction="#handleBack" text="Back" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" />
+       <Button layoutX="469.0" layoutY="46.0" mnemonicParsing="false" onAction="#savePdf" text="Enregistrer en pdf" />
       <VBox fx:id="dataContainer" layoutX="29.0" layoutY="40.0" prefHeight="300.0" prefWidth="423.0" spacing="20">
          <children>
             <Label fx:id="titleLabel" text="Finances totales (faites le dd-MM-yyyy à hh:mm:ss)">

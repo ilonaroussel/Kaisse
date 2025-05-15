@@ -4,6 +4,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -15,6 +16,7 @@ import javafx.scene.layout.HBox;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.example.kaisse.Main;
+import org.example.kaisse.SceneManager;
 import org.example.kaisse.controller.components.DishCardController;
 import org.example.kaisse.model.Dish;
 import org.example.kaisse.model.Ingredient;
@@ -39,7 +41,9 @@ public class MenuController {
     private ObservableList<HBox> observableDishes;
     private ArrayList< Ingredient> ingredients = new ArrayList<>();
 
-
+    @FXML protected void handleBack(ActionEvent event) throws IOException {
+        SceneManager.changeScene("main-view.fxml", event);
+    }
 
     @FXML
     protected void onDishButtonClick() {

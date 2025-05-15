@@ -2,6 +2,7 @@ package org.example.kaisse.controller;
 
 import com.mongodb.client.MongoCollection;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
@@ -19,6 +20,7 @@ import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.bson.Document;
 import org.example.kaisse.Main;
+import org.example.kaisse.SceneManager;
 import org.example.kaisse.model.Order;
 
 import java.awt.image.BufferedImage;
@@ -37,6 +39,10 @@ public class FinancesController implements Initializable {
     @FXML Label winningsLabel;
     @FXML Label spendingLabel;
     @FXML Label benefitLabel;
+
+    @FXML protected void handleBack(ActionEvent event) throws IOException {
+        SceneManager.changeScene("main-view.fxml", event);
+    }
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
