@@ -196,8 +196,12 @@ public class OrderController implements Initializable {
         hbox.getChildren().addAll(tableLabel, dateLabel, priceLabel, stateChoice);
 
         ListView<HBox> dishesList = new ListView<>();
-        dishesList.setPrefHeight(100);
+        dishesList.setPrefHeight(300);
         dishesList.setPrefWidth(width);
+        dishesList.setOnMouseClicked(_ -> {
+            selectedOrder = order;
+            selectedOrderVBox = vbox;
+        });
 
         // Initialize ListView with existing dishes
         ObservableList<HBox> dishListItems = FXCollections.observableArrayList();
