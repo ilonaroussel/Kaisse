@@ -175,11 +175,7 @@ public class OrderController implements Initializable {
         // Label with the formatted date
         Label dateLabel = new Label(order.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         // Label with the total price
-        Label priceLabel = new Label(String.format("%.2f€", order
-                .getDishes()
-                .stream()
-                .map(orderDish -> orderDish.getQuantity() * orderDish.getDish().getPrice())
-                .reduce((double) 0, Double::sum)));
+        Label priceLabel = new Label(String.format("%.2f€", order.getPrice()));
 
         ChoiceBox<String> stateChoice = new ChoiceBox<>(states);
         stateChoice.setValue(order.getState());
