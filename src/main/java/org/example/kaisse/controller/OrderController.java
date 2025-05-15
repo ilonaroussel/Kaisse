@@ -13,6 +13,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -146,19 +148,24 @@ public class OrderController implements Initializable {
             // Converts Document to Dish
             Dish dish = Dish.createFromDocument(element);
 
-            HBox hbox = new HBox(20);
-            hbox.setPrefHeight(100);
-            hbox.setPrefWidth(width);
-            hbox.setOnMouseClicked(_ -> addDishToOrder(dish));
+            HBox dishCard = new HBox(20);
+            dishCard.setMinHeight(50);
+            dishCard.setMinWidth(75);
+            dishCard.setOnMouseClicked(_ -> addDishToOrder(dish));
 
-            // Label with the table number
+            Image image = new Image(dish.getImage());
+            ImageView dishImage = new ImageView();
+            dishImage.setFitHeight(50);
+            dishImage.setFitWidth(75);
+            dishImage.setImage(image);
+
             Label dishName = new Label(dish.getName());
-            // Label with the formatted date
             Label dishPrice = new Label(String.format("%.2f€", dish.getPrice()));
 
-            hbox.getChildren().addAll(dishName, dishPrice);
 
-            items.add(hbox);
+            dishCard.getChildren().addAll(dishImage, dishName, dishPrice);
+
+            items.add(dishCard);
         });
 
         dishList.setItems(items);
@@ -166,7 +173,7 @@ public class OrderController implements Initializable {
 
     private void addOrderToList(Order order) {
         // VBox with details on top and dishes on bottom
-        VBox vbox = new VBox();
+        VBox vbox = new VBox(5);
         vbox.setPrefWidth(width);
         vbox.setOnMouseClicked(_ -> {
             selectedOrder = order;
@@ -174,7 +181,7 @@ public class OrderController implements Initializable {
         });
 
         // HBox with table data
-        HBox hbox = new HBox(20);
+        HBox hbox = new HBox(40);
         hbox.setPrefWidth(width);
 
         // Label with the table number
@@ -206,12 +213,20 @@ public class OrderController implements Initializable {
         // Initialize ListView with existing dishes
         ObservableList<HBox> dishListItems = FXCollections.observableArrayList();
         order.getDishes()/*.stream()*/.forEach(orderDish -> {
+            Dish dish = orderDish.getDish();
+
             // Create a new HBox with the name and the price of the dish
-            HBox box = new HBox(20);
+            HBox box = new HBox(40);
             box.setPrefWidth(width);
 
-            Label name = new Label(orderDish.getDish().getName() + " x " + orderDish.getQuantity());
-            Label price = new Label(String.format("%.2f€", orderDish.getQuantity() * orderDish.getDish().getPrice()));
+            Image image = new Image(dish.getImage());
+            ImageView dishImage = new ImageView();
+            dishImage.setFitHeight(50);
+            dishImage.setFitWidth(75);
+            dishImage.setImage(image);
+
+            Label name = new Label(dish.getName() + " x " + orderDish.getQuantity());
+            Label price = new Label(String.format("%.2f€", orderDish.getQuantity() * dish.getPrice()));
 
             Button deleteDishButton = new Button("❌");
             deleteDishButton.setOnAction(_ -> {
@@ -222,7 +237,7 @@ public class OrderController implements Initializable {
                 dishesList.setItems(items);
             });
 
-            box.getChildren().addAll(name, price, deleteDishButton);
+            box.getChildren().addAll(dishImage, name, price, deleteDishButton);
 
             dishListItems.add(box);
         });
