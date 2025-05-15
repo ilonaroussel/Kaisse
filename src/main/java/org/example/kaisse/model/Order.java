@@ -124,25 +124,10 @@ public class Order {
         }
     }
 
-    public void cancel() {
+    public void changeState(String state) {
         MongoCollection<Document> collection = Main.database.getCollection("Order");
 
-        this.state = "CANCELED";
-        Bson filter = eq("_id", this.id);
-        Bson update = Updates.set("state", this.state);
-
-        try {
-            collection.updateOne(filter, update);
-            System.out.println("Updated: " + this);
-        } catch (Exception e) {
-            System.out.println("Fail Update: " + e);
-        }
-    }
-
-    public void validate() {
-        MongoCollection<Document> collection = Main.database.getCollection("Order");
-
-        this.state = "VALIDATED";
+        this.state = state;
         Bson filter = eq("_id", this.id);
         Bson update = Updates.set("state", this.state);
 
