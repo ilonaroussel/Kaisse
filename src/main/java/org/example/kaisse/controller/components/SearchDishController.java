@@ -25,14 +25,18 @@ public class SearchDishController {
 
     private final MongoDatabase database = Main.database;
 
+    //Function that will search all the dish containing all the ingredients prompted by user
     @FXML
     protected void onActionSearchBar (){
+        //get all Dish from the dish table
         MongoCollection<Document> collection = database.getCollection("Dish");
-
         List<Document> documents = collection.find().into(new ArrayList<>());
         List<Dish> dishes = documents.stream().map(Dish::createFromDocument).toList();
+
+        //get ingredients prompted
         List<String> searchedIngredient = Arrays.stream(searchBar.getText().split(" ")).map(String::toLowerCase).toList();
 
+        //filter dish and keeping only those wich have all ingredients in it
         List<Dish> filteredDishes = dishes
                 .stream()
                 .filter(dish -> {
@@ -42,6 +46,7 @@ public class SearchDishController {
                 })
                 .toList();
 
+        //Setup all the box to display dishes
         ObservableList<HBox> items = FXCollections.observableArrayList(
             filteredDishes.stream().map(dish -> {
                 HBox dishCard = new HBox(20);

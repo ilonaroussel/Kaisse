@@ -89,7 +89,7 @@ public class CreateUserController {
         alert.showAndWait();
     }
 
-    @FXML public void handleBackClick(MouseEvent event) throws IOException {
+    @FXML public void handleBack(MouseEvent event) throws IOException {
         SceneManager.changeScene("user-list-view.fxml", event);
     }
 }

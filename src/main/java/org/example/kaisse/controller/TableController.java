@@ -10,11 +10,13 @@ import javafx.scene.layout.GridPane;
 import org.bson.Document;
 import org.example.kaisse.Main;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.ListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.example.kaisse.SceneManager;
 import org.example.kaisse.model.Table;
 
 public class TableController {
@@ -28,6 +30,9 @@ public class TableController {
     @FXML
     private TextField emplacementField;
 
+    @FXML protected void handleBack(ActionEvent event) throws IOException {
+        SceneManager.changeScene("main-view.fxml", event);
+    }
 
     @FXML
     protected void getAllTablesFromDatabase() {

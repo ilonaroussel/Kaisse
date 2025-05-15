@@ -9,6 +9,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -18,11 +19,13 @@ import javafx.util.Duration;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.example.kaisse.Main;
+import org.example.kaisse.SceneManager;
 import org.example.kaisse.model.Chronometer;
 import org.example.kaisse.model.Dish;
 import org.example.kaisse.model.Order;
 import org.example.kaisse.model.Table;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -57,6 +60,10 @@ public class OrderController implements Initializable {
         initTableChoiceBox();
         initDishList();
         initializeChronometer();
+    }
+
+    @FXML protected void handleBack(ActionEvent event) throws IOException {
+        SceneManager.changeScene("main-view.fxml", event);
     }
 
     public void initializeChronometer() {

@@ -22,7 +22,7 @@
 
          <HBox alignment="CENTER" spacing="120">
             <children>
-               <Label onMouseClicked="#handleBackClick" style="-fx-text-fill: blue; -fx-underline: true;" text="back" />
+               <Label onMouseClicked="#handleBack" style="-fx-text-fill: blue; -fx-underline: true;" text="back" />
                <Button onAction="#handleSubmit" text="Submit" />
             </children>
          </HBox>

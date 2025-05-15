@@ -4,6 +4,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -15,6 +16,7 @@ import javafx.scene.layout.HBox;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.example.kaisse.Main;
+import org.example.kaisse.SceneManager;
 import org.example.kaisse.controller.components.DishCardController;
 import org.example.kaisse.model.Dish;
 import org.example.kaisse.model.Ingredient;
@@ -39,8 +41,11 @@ public class MenuController {
     private ObservableList<HBox> observableDishes;
     private ArrayList< Ingredient> ingredients = new ArrayList<>();
 
+    @FXML protected void handleBack(ActionEvent event) throws IOException {
+        SceneManager.changeScene("main-view.fxml", event);
+    }
 
-
+    //When clicking on the button to add dish display a pop up with a form that add a dish
     @FXML
     protected void onDishButtonClick() {
         Dialog<Void> formDialog = new Dialog<>();
@@ -64,7 +69,7 @@ public class MenuController {
         formDialog.showAndWait();
         form_popup.setVisible(false);
     }
-
+    //Function that add the created dish to DB
     @FXML
     public void addDish(String name, String description, Double price, String image, ArrayList<Ingredient> ingredientList) {
 
@@ -73,6 +78,7 @@ public class MenuController {
 
             Dish finalDish = new Dish(ObjectId.get(), name,description,price,image, ingredientList);
 
+            //clear the form
             nameField.clear();
             descriptionField.clear();
             priceField.clear();
@@ -95,6 +101,8 @@ public class MenuController {
 
     }
 
+
+    // function that get all dishes and return an observable list that display them
     protected ObservableList<HBox> getAllDishes(MongoDatabase database){
         MongoCollection<Document> collection = database.getCollection("Dish");
 
@@ -133,6 +141,7 @@ public class MenuController {
                 }).toList());
     }
 
+    //Create one card that will display the dish in the list
     protected void displayDishCard(Dish displayedDish) throws IOException {
         Dialog<Void> dialog = new Dialog<>();
         DialogPane dialogPane = dialog.getDialogPane();
@@ -149,6 +158,7 @@ public class MenuController {
         dialog.showAndWait();
     }
 
+    //Pop up that add an ingredient in the dish
     @FXML
     protected void createIngredient() {
 
