@@ -139,6 +139,13 @@ public class Order {
         }
     }
 
+    public double getPrice() {
+        return this.dishes
+                .stream()
+                .map(orderDish -> orderDish.getQuantity() * orderDish.getDish().getPrice())
+                .reduce(0.0, Double::sum);
+    }
+
     public ObjectId getId() {
         return id;
     }
