@@ -63,8 +63,8 @@ public class FinancesController implements Initializable {
                         .getDishes()
                         .stream()
                         .map(orderDish -> orderDish.getQuantity() * orderDish.getDish().getPrice())
-                        .reduce((double) 0, Double::sum))
-                .reduce((double) 0, Double::sum);
+                        .reduce(0.0, Double::sum))
+                .reduce(0.0, Double::sum);
 
         winningsLabel.setText(String.format("%.2f€", winnings));
 
@@ -75,9 +75,9 @@ public class FinancesController implements Initializable {
                         .map(orderDish -> orderDish.getQuantity() * orderDish.getDish().getIngredients()
                                 .stream()
                                 .map(ingredient -> ingredient.getQuantity() * ingredient.getPrice())
-                                .reduce((double) 0, Double::sum))
-                        .reduce((double) 0, Double::sum))
-                .reduce((double) 0, Double::sum);
+                                .reduce(0.0, Double::sum))
+                        .reduce(0.0, Double::sum))
+                .reduce(0.0, Double::sum);
 
         spendingLabel.setText(String.format("%.2f€", spending));
 

@@ -179,7 +179,7 @@ public class OrderController implements Initializable {
                 .getDishes()
                 .stream()
                 .map(orderDish -> orderDish.getQuantity() * orderDish.getDish().getPrice())
-                .reduce((double) 0, Double::sum)));
+                .reduce(0.0, Double::sum)));
 
         ChoiceBox<String> stateChoice = new ChoiceBox<>(states);
         stateChoice.setValue(order.getState());
