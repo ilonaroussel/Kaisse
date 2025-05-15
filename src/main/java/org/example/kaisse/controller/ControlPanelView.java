@@ -33,8 +33,6 @@ public class ControlPanelView implements Initializable {
     }
 
     private void loadCard(String link, int x, int y) {
-        System.out.println(x);
-        System.out.println(y);
         FXMLLoader loader = new FXMLLoader(getClass().getResource(link));
 
         try {

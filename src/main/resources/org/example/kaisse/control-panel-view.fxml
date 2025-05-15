@@ -2,10 +2,9 @@
 
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.kaisse.controller.ControlPanelView">
+<AnchorPane prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.kaisse.controller.ControlPanelView">
    <children>
-      <GridPane fx:id="grid" layoutX="14.0" layoutY="14.0" prefHeight="373.0" prefWidth="572.0">
+      <GridPane fx:id="grid" layoutX="3.0" layoutY="14.0" prefHeight="800.0" prefWidth="800.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
