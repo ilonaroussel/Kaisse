@@ -6,6 +6,7 @@
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="800.0" minWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.kaisse.controller.UserListController">
     <children>
         <Button onAction="#handleCreateUser" text="Create an User" AnchorPane.topAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+        <Button onAction="#handleBack" text="Back" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" />
         <GridPane fx:id="form_popup" alignment="CENTER" hgap="10" layoutX="199.0" layoutY="115.0" prefWidth="201.0" vgap="10" visible="false">
             <children>
                 <Label alignment="CENTER" text="Name:" textAlignment="RIGHT" />

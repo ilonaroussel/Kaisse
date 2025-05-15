@@ -14,9 +14,16 @@ public class SceneManager {
     public static void changeScene(String view, Event event) throws IOException {
         String viewPath = "/org/example/kaisse/";
         String fullPath = viewPath.concat(view);
+
         Parent root = FXMLLoader.load(Objects.requireNonNull(SceneManager.class.getResource(fullPath)));
+        Scene scene = new Scene(root);
+
+        scene.getStylesheets().add(
+                Objects.requireNonNull(SceneManager.class.getResource("style/global.css")).toExternalForm()
+        );
+
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
+        stage.setScene(scene);
         stage.show();
     }
 }

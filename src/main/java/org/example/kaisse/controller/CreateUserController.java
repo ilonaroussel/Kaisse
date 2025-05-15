@@ -90,6 +90,6 @@ public class CreateUserController {
     }
 
     @FXML public void handleBackClick(MouseEvent event) throws IOException {
-        SceneManager.changeScene("user-list-view", event);
+        SceneManager.changeScene("user-list-view.fxml", event);
     }
 }

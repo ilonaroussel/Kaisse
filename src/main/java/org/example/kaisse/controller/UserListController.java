@@ -35,7 +35,11 @@ public class UserListController {
     @FXML private CheckBox isAdminCheckBox;
 
     @FXML protected void handleCreateUser(ActionEvent event) throws IOException {
-        SceneManager.changeScene("create-user-view", event);
+        SceneManager.changeScene("create-user-view.fxml", event);
+    }
+
+    @FXML protected void handleBack(ActionEvent event) throws IOException {
+        SceneManager.changeScene("main-view.fxml", event);
     }
 
     @FXML protected void handleDeleteUser() {

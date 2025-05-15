@@ -1,0 +1,64 @@
+/* === GLOBAL ROOT === */
+.root {
+    /*-fx-font-family: "Comic Sans MS", cursive, sans-serif;*/
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #f4f6f8;
+}
+
+/* === LABEL === */
+.label {
+    -fx-text-fill: #333;
+    -fx-font-size: 16px;
+}
+
+/* === TITLE LABELS === */
+.label.title {
+    -fx-font-size: 50px;
+    -fx-font-weight: bold;
+}
+
+/* === TEXT INPUTS === */
+.text-field,
+.password-field {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px;
+    -fx-prompt-text-fill: #999;
+    -fx-text-fill: #222;
+}
+
+.text-field:focused,
+.password-field:focused {
+    -fx-border-color: #3498db;
+}
+
+/* === BUTTON === */
+.button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+    -fx-padding: 8px 10px;
+}
+
+.button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.button:pressed {
+    -fx-background-color: #2471a3;
+}
+
+/* === SPACING === */
+.vbox, .hbox {
+    -fx-spacing: 12px;
+}
+
+/* === ALIGNMENT === */
+.stack-pane, .vbox, .hbox {
+    -fx-alignment: center;
+}

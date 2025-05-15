@@ -3,6 +3,9 @@ package org.example.kaisse.controller;
 import com.mongodb.client.MongoCollection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import org.bson.Document;
@@ -12,6 +15,8 @@ import org.example.kaisse.model.User;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -21,6 +26,12 @@ public class LoginController {
 
     @FXML protected void handleSubmit(ActionEvent event) throws IOException {
         MongoCollection<Document> collection = Main.database.getCollection("User");
+
+//        if (true) {
+//            SceneManager.changeScene("login-view.fxml", event);
+//            System.out.println("youyouuuu j'en peu pluuuuuus");
+//            return;
+//        }
 
         // Get the TextFiled data when the submit button is clicked
         String submitName = name.getText();
@@ -53,7 +64,7 @@ public class LoginController {
 
         Main.loggedUser = user;
 
-        SceneManager.changeScene("main-view", event);
+        SceneManager.changeScene("main-view.fxml", event);
     }
 
     private void createDialog(String message) {
