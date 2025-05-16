@@ -30,6 +30,7 @@ public class TableController {
     @FXML
     private TextField emplacementField;
 
+    //Return to home page
     @FXML protected void handleBack(ActionEvent event) throws IOException {
         SceneManager.changeScene("Main-view.fxml", event);
     }
@@ -41,9 +42,6 @@ public class TableController {
             MongoCollection<Document> collection = database.getCollection("Table");
 
             List<Document> documents = collection.find().into(new ArrayList<>());
-            for (Document doc : documents) {
-                System.out.println("Document : " + doc.toJson());
-            }
 
             List<Table> tables = documents.stream()
                     .map(Table::createFromDocument)
@@ -56,15 +54,12 @@ public class TableController {
                         " | Places : " + table.getSeats() +
                         " | Emplacement : " + table.getEmplacement() +
                         " | Libre : " + (table.getFree() ? "Disponible" : "Indisponible");
-                System.out.println("Ajout au ListView : " + display);
                 tableDisplayList.add(display);
             }
 
             listTable.setItems(tableDisplayList);
-            System.out.println("Affichage terminé.");
 
         } catch (Exception e) {
-            System.out.println("Exception : " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -72,12 +67,12 @@ public class TableController {
     @FXML
     public void addTable() {
         try {
+            //Retrieves values from textfield
             Integer number = Integer.parseInt(numberField.getText());
             Integer seats = Integer.parseInt(seatsField.getText());
             String emplacement = emplacementField.getText();
 
             if (emplacement.isEmpty()) {
-                System.out.println("Emplacement vide.");
                 return;
             }
 
@@ -90,13 +85,12 @@ public class TableController {
                     .append("isFree", false);
 
             collection.insertOne(dish);
-            System.out.println("Table ajoutée.");
 
             numberField.clear();
             seatsField.clear();
             emplacementField.clear();
 
-            getAllTablesFromDatabase();
+            getAllTablesFromDatabase(); //Refreshes the display
 
         } catch (NumberFormatException e) {
             System.out.println("Entrez des nombres valides pour le numéro et les places.");
