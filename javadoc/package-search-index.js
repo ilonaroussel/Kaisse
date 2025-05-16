@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"org.example.kaisse","l":"org.example.kaisse"},{"m":"org.example.kaisse","l":"org.example.kaisse.controller"},{"m":"org.example.kaisse","l":"org.example.kaisse.controller.components"},{"m":"org.example.kaisse","l":"org.example.kaisse.model"}];updateSearchResults();

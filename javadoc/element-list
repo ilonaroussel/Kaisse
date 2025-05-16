@@ -1,0 +1,5 @@
+module:org.example.kaisse
+org.example.kaisse
+org.example.kaisse.controller
+org.example.kaisse.controller.components
+org.example.kaisse.model
