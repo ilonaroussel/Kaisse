@@ -31,7 +31,7 @@ public class TableController {
     private TextField emplacementField;
 
     @FXML protected void handleBack(ActionEvent event) throws IOException {
-        SceneManager.changeScene("main-view.fxml", event);
+        SceneManager.changeScene("Main-view.fxml", event);
     }
 
     @FXML

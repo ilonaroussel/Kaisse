@@ -41,7 +41,7 @@ public class FinancesController implements Initializable {
     @FXML Label benefitLabel;
 
     @FXML protected void handleBack(ActionEvent event) throws IOException {
-        SceneManager.changeScene("main-view.fxml", event);
+        SceneManager.changeScene("Main-view.fxml", event);
     }
 
     @FXML

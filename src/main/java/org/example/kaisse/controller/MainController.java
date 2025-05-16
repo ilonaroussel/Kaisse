@@ -20,27 +20,27 @@ public class MainController implements Initializable {
 
     @FXML protected void handleLogout(ActionEvent event) throws IOException  {
         Main.loggedUser = null;
-        SceneManager.changeScene("login-view.fxml", event);
+        SceneManager.changeScene("Login-view.fxml", event);
     }
 
     // Navigation between all pages
     @FXML protected void goToUserList(ActionEvent event) throws IOException  {
-        SceneManager.changeScene("user-list-view.fxml", event);
+        SceneManager.changeScene("User-list-view.fxml", event);
     }
     @FXML protected void goToFinances(ActionEvent event) throws IOException  {
-        SceneManager.changeScene("finances-view.fxml", event);
+        SceneManager.changeScene("Finances-view.fxml", event);
     }
     @FXML protected void goToOrder(ActionEvent event) throws IOException  {
-        SceneManager.changeScene("order-view.fxml", event);
+        SceneManager.changeScene("Order-view.fxml", event);
     }
     @FXML protected void goToMenu(ActionEvent event) throws IOException  {
-        SceneManager.changeScene("menu-view.fxml", event);
+        SceneManager.changeScene("Menu-view.fxml", event);
     }
     @FXML protected void goToTable(ActionEvent event) throws IOException  {
-        SceneManager.changeScene("table-view.fxml", event);
+        SceneManager.changeScene("Table-view.fxml", event);
     }
     @FXML protected void goToPanel(ActionEvent event) throws IOException  {
-        SceneManager.changeScene("control-panel-view.fxml", event);
+        SceneManager.changeScene("Control-panel-view.fxml", event);
     }
 
 

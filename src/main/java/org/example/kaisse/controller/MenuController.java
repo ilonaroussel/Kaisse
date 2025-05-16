@@ -42,7 +42,7 @@ public class MenuController {
     private ArrayList< Ingredient> ingredients = new ArrayList<>();
 
     @FXML protected void handleBack(ActionEvent event) throws IOException {
-        SceneManager.changeScene("main-view.fxml", event);
+        SceneManager.changeScene("Main-view.fxml", event);
     }
 
     //When clicking on the button to add dish display a pop up with a form that add a dish
@@ -148,7 +148,7 @@ public class MenuController {
         dialog.setHeight(500);
         dialog.setWidth(750);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/kaisse/components/dish-card.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/kaisse/components/Dish-card.fxml"));
         AnchorPane cardContent = loader.load();
         DishCardController controller = loader.getController();
         controller.setDish(displayedDish);

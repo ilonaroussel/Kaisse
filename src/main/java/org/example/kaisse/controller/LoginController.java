@@ -58,7 +58,7 @@ public class LoginController {
 
         Main.loggedUser = user;
 
-        SceneManager.changeScene("main-view.fxml", event);
+        SceneManager.changeScene("Main-view.fxml", event);
     }
 
     private void createDialog(String message) {

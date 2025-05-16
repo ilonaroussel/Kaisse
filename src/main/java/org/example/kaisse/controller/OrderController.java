@@ -65,7 +65,7 @@ public class OrderController implements Initializable {
     }
 
     @FXML protected void handleBack(ActionEvent event) throws IOException {
-        SceneManager.changeScene("main-view.fxml", event);
+        SceneManager.changeScene("Main-view.fxml", event);
     }
 
     public void initializeChronometer() {
